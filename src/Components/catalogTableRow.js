@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TableRow(props,
+function CatalogTableRow(props,
                   editData,
 
                   isEditting,
@@ -55,4 +55,4 @@ function TableRow(props,
   }
 }
 
-export default TableRow;
+export default CatalogTableRow;

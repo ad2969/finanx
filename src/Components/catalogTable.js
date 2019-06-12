@@ -1,7 +1,7 @@
 import React from 'react';
-import TableRow from './tableRow';
+import CatalogTableRow from './catalogTableRow';
 
-class Table extends React.Component {
+class CatalogTable extends React.Component {
 
   render() {
 
@@ -10,7 +10,7 @@ class Table extends React.Component {
     for(let i = 0; i < this.props.transactionObjects.length; i++ )
     {
       rows.push(
-        TableRow(
+        CatalogTableRow(
           this.props.transactionObjects[i],
           this.props.editData,
 
@@ -53,4 +53,4 @@ class Table extends React.Component {
   }
 }
 
-export default Table
+export default CatalogTable
