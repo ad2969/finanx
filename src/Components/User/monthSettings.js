@@ -20,19 +20,16 @@ class MonthSettings extends React.Component {
   }
 
   render() {
-    var newSettings = {
-      budgetExpense: 1000
-    }
 
     return(
       <div>
-        <form onSubmit={() => this.props.handleSubmit(newSettings)}>
+        <form onSubmit={() => this.props.handleSubmit(this.state.data)}>
 
           <label> Budget for Expenses:
             <input type="number" min="0" defaultValue={this.props.budget} onChange={this.handleBudget} />
           </label>
 
-          <input type="submit" value="Save Changes" />
+          <div><input type="submit" value="Save Changes" /></div>
         </form>
       </div>
     )

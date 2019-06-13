@@ -1,0 +1,51 @@
+[
+  {
+    "date":         12,
+    "description":  "from madre",
+    "amount":       1000,
+    "category":     "Sponsor",
+    "id":           1
+  },
+  {
+    "date":         1,
+    "description":  "from papi",
+    "amount":       100,
+    "category":     "Sponsor",
+    "id":           2
+  },
+  {
+    "date":         24,
+    "description":  "Apple Stocks",
+    "amount":       200,
+    "category":     "Investment",
+    "id":           3
+  },
+  {
+    "date":         13,
+    "description":  "haxx0rz~~#920^%+{}|",
+    "amount":       1000,
+    "category":     "Other",
+    "id":           4
+  },
+  {
+    "date":         16,
+    "description":  "Found on the floorz",
+    "amount":       25,
+    "category":     "Other",
+    "id":           5
+  },
+  {
+    "date":         18,
+    "description":  "Bank",
+    "amount":       0.05,
+    "category":     "Interest",
+    "id":           6
+  },
+  {
+    "date":         30,
+    "description":  "BBW",
+    "amount":       221.74,
+    "category":     "Salary",
+    "id":           7
+  }
+]

@@ -2,12 +2,10 @@ import React from 'react';
 import CatalogTable from './catalogTable';
 import NewTransactionForm from './newTransactionForm';
 
-import initialData from '../../monthDataExample.json';
-
 class MonthCatalog extends React.Component {
 
   constructor(props) {
-    console.log('Month Catalog Constructed!');
+    // console.log('Month Catalog Constructed!');
     super(props);
 
     this.state = {
@@ -28,9 +26,7 @@ class MonthCatalog extends React.Component {
       editId:    0
     }
 
-    console.log("Initial count: ", this.state.transactionCount);
-
-    this.sortExpensesBy      = this.sortExpensesBy.bind(this);
+    this.toggleSortBy        = this.toggleSortBy.bind(this);
 
     this.append              = this.append.bind(this);
     this.remove              = this.remove.bind(this);
@@ -46,13 +42,34 @@ class MonthCatalog extends React.Component {
     this.handleCategory      = this.handleCategory.bind(this);
   }
 
+
+
+  // Update from upper tree
+  componentDidMount() {
+    console.log("Month Catalog Mounted!");
+    this.setState({
+      transactionObjects: this.props.realData,
+      transactionCount: this.props.realCount
+    });
+  }
+
+  // Update to upper tree
+  componentWillUnmount() {
+    console.log("Month Catalog Unmounted! Updating tree....");
+    this.props.updateData( this.state.transactionObjects, this.state.transactionCount );
+  }
+
   /* Database Functions */
 
   loadJSON = () => {
+    let data = [];
+    for( let i = 0; i < this.props.initialData.length; i++ ) {
+      data.push( this.props.initialData[i] )
+    }
     this.setState(prevState => ({
-      transactionObjects: initialData,
-      transactionCount: prevState.transactionCount + initialData.length
-    }));
+      transactionObjects: data,
+      transactionCount: prevState.transactionCount + data.length
+    }), () => { console.log("External Data Loaded!, Array:", this.state.transactionObjects) });
   }
 
   append = ( transaction ) =>  {
@@ -86,8 +103,25 @@ class MonthCatalog extends React.Component {
 
   /* Database Sorters */
 
+  toggleSortBy = (argument) => {
+    // console.log("Data initialized to sort by", argument, "!");
+    if( this.state.isSortedBy !== argument )
+    {
+      this.setState({
+        isSortedBy:     argument,
+        isReverseSort:  false
+      }, () => { this.sortData(argument) });
+    }
+    else
+    {
+      this.setState( prevState => ({
+        isReverseSort: !prevState.isReverseSort
+      }), () => { this.sortData(argument) })
+    }
+  }
+
   sortData = (argument) => {
-    console.log("** sortData called!");
+    // console.log("** sortData called!");
     console.log("   # Sort is reversed = ", this.state.isReverseSort);
     let transactionList = this.state.transactionObjects;
     let sortedTransactions;
@@ -120,25 +154,8 @@ class MonthCatalog extends React.Component {
     }
     this.setState({
       transactionObjects: sortedTransactions },
-      console.log("** Sorted By", this.state.isSortedBy, ", Sorted Array: ", sortedTransactions)
+      () => { console.log("** Sorted By", this.state.isSortedBy, ", Sorted Array: ", sortedTransactions) }
     );
-  }
-
-  sortExpensesBy = (argument) => {
-    console.log("Data initialized to sort by", argument, "!");
-    if( this.state.isSortedBy !== argument )
-    {
-      this.setState({
-        isSortedBy:     argument,
-        isReverseSort:  false
-      }, () => { this.sortData(argument) });
-    }
-    else
-    {
-      this.setState( prevState => ({
-        isReverseSort: !prevState.isReverseSort
-      }), () => { this.sortData(argument) })
-    }
   }
 
   /* Form handlers */
@@ -213,6 +230,7 @@ class MonthCatalog extends React.Component {
 
   render() {
 
+    // console.log("Month Catalog Rendered!");
     // console.log("Current count: ", this.state.transactionCount);
     // console.log("Printed Array: ", this.state.transactionObjects);
 
@@ -223,11 +241,11 @@ class MonthCatalog extends React.Component {
 
         <button onClick={this.loadJSON}>LOAD LOCAL JSON DATA</button>
 
-        <button onClick={() => {this.sortExpensesBy( "Date" )}}>Sort By Date</button>
-        <button onClick={() => {this.sortExpensesBy( "Description" )}}>Sort By Description</button>
-        <button onClick={() => {this.sortExpensesBy( "Amount" )}}>Sort By Amount</button>
-        <button onClick={() => {this.sortExpensesBy( "Category" )}}>Sort By Category</button>
-        <button onClick={() => {this.sortExpensesBy( "Id" )}}>Sort By Recent</button>
+        <button onClick={() => {this.toggleSortBy( "Date" )}}>Sort By Date</button>
+        <button onClick={() => {this.toggleSortBy( "Description" )}}>Sort By Description</button>
+        <button onClick={() => {this.toggleSortBy( "Amount" )}}>Sort By Amount</button>
+        <button onClick={() => {this.toggleSortBy( "Category" )}}>Sort By Category</button>
+        <button onClick={() => {this.toggleSortBy( "Id" )}}>Sort By Recent</button>
 
         <CatalogTable transactionObjects = {this.state.transactionObjects}
                       transactionCount   = {this.state.transactionCount}

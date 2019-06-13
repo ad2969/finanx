@@ -5,6 +5,9 @@ import MonthCatalog from './Widgets/monthCatalog';
 import MonthSettings from './User/monthSettings';
 import MonthBudgetWidget from './Widgets/monthBudgetWidget';
 
+import expensesData from '../monthExpensesExample.json';
+import incomeData from '../monthIncomeExample.json';
+
 // Grid layout is imported (responsive grid)
 import { WidthProvider, Responsive } from "react-grid-layout";
 import _ from "lodash";
@@ -12,6 +15,7 @@ import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 import './styles/month-grid-styles.scss'
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
+
 
 // Style preset for exit buttons
 const closeButtonStyle = {
@@ -74,10 +78,13 @@ class Month extends React.Component {
     super();
     console.log("Month constructed!");
     this.state = {
+
+      // Modal Status
       showCatalog: false,
       showSettings: false,
 
-      categories: [
+      // Transaction Information
+      expenseCategories: [
         "Food and Groceries",
         "Entertainment",
         "Education",
@@ -85,7 +92,29 @@ class Month extends React.Component {
         "Rent",
         "Other",
       ],
+      incomeCategories: [
+        "Salary",
+        "Interest",
+        "Sponsor",
+        "Investment",
+        "Other",
+      ],
 
+      expenseTransactions: [],
+      expenseTransactionsCount: 1,
+      incomeTransactions: [],
+      incomeTransactionsCount: 1,
+
+      userSet: {
+        budgetExpense: 0,
+        startingBalance: 0,
+      },
+      info: {
+        totalExpense: 0,
+        totalIncome: 0,
+      },
+
+      // Widget Info
       items: [0, 1, 2, 3, 4, 5, 6].map((i, key, list) => {
         return {
           i: i.toString(),
@@ -96,22 +125,18 @@ class Month extends React.Component {
       layout: [],
       widgetCounter: 7,
 
-      numDays: 30,
+      // Miscellaneous Info
+      numDays: 30
 
-      userSet: {
-        budgetExpense: 0,
-        startingBalance: 0,
-      },
-      info: {
-        totalExpense: 0,
-        totalIncome: 0,
-      }
     };
 
     this.handleOpenCatalog    = this.handleOpenCatalog.bind(this);
     this.handleCloseCatalog   = this.handleCloseCatalog.bind(this);
     this.handleOpenSettings   = this.handleOpenSettings.bind(this);
     this.handleCloseSettings  = this.handleCloseSettings.bind(this);
+
+    this.handleUpdateExpenses = this.handleUpdateExpenses.bind(this);
+    this.handleUpdateIncome   = this.handleUpdateIncome.bind(this);
 
     this.handleEditBudget     = this.handleEditBudget.bind(this);
     this.handleSettingsChange = this.handleSettingsChange.bind(this);
@@ -141,6 +166,19 @@ class Month extends React.Component {
 
   handleEditBudget = () => {
     this.handleOpenSettings();
+  }
+
+  handleUpdateExpenses = ( newTransactionList, transactionCount ) => {
+    this.setState({
+      expenseTransactions: newTransactionList,
+      expenseTransactionsCount: transactionCount
+    }, () => { console.log("Expenses updated!, Array:", this.state.expenseTransactions) });
+  }
+  handleUpdateIncome = ( newTransactionList, transactionCount ) => {
+    this.setState({
+      incomeTransactions: newTransactionList,
+      incomeTransactionsCount: transactionCount
+    }, () => { console.log("IncomeW updated!, Array:", this.state.incomeTransactions) });
   }
 
   // Settings
@@ -272,6 +310,10 @@ class Month extends React.Component {
 
   render() {
 
+    var totalExpense = this.state.expenseTransactions.reduce(
+      (prev, next) => { return(prev.amount + next.amount) }, 0);
+    var totalIncome= this.state.incomeTransactions.reduce(
+      (prev, next) => { return(prev.amount + next.amount) }, 0);
     var averageDailyExpense = this.state.info.totalExpense / this.state.numDays;
     var endBalance = this.state.userSetstartingBalance - this.state.info.totalExpense + this.state.info.totalIncome;
 
@@ -288,7 +330,18 @@ class Month extends React.Component {
                onRequestClose = {this.handleCloseCatalog} >
 
           <span style={closeButtonStyle} onClick={this.handleCloseCatalog}>&#10006;</span>
-          <MonthCatalog categories={this.state.categories} />
+          <h1>Expenses</h1>
+          <MonthCatalog categories  = {this.state.expenseCategories}
+                        initialData = {expensesData}
+                        realData    = {this.state.expenseTransactions}
+                        realCount   = {this.state.expenseTransactionsCount}
+                        updateData  = {this.handleUpdateExpenses}/>
+          <h1>Income</h1>
+          <MonthCatalog categories  = {this.state.incomeCategories}
+                        initialData = {incomeData}
+                        realData    = {this.state.incomeTransactions}
+                        realCount   = {this.state.incomeTransactionsCount}
+                        updateData  = {this.handleUpdateIncome}/>
 
         </Modal>
 
@@ -302,6 +355,10 @@ class Month extends React.Component {
           <MonthSettings budget={this.state.userSet.budgetExpense} handleSubmit={this.handleSettingsChange} />
 
         </Modal>
+
+        <div>
+          <button onClick={this.handleOpenSettings}>Month Settings</button>
+        </div>
 
         <div> Add widgets here: (Dropdown menu)
           <button onClick={() => {this.addWidget("monthBudget")}}>Add Budget Widget</button>
