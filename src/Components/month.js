@@ -77,6 +77,15 @@ class Month extends React.Component {
       showCatalog: false,
       showSettings: false,
 
+      categories: [
+        "Food and Groceries",
+        "Entertainment",
+        "Education",
+        "Insurance and Bills",
+        "Rent",
+        "Other",
+      ],
+
       items: [0, 1, 2, 3, 4, 5, 6].map((i, key, list) => {
         return {
           i: i.toString(),
@@ -279,7 +288,7 @@ class Month extends React.Component {
                onRequestClose = {this.handleCloseCatalog} >
 
           <span style={closeButtonStyle} onClick={this.handleCloseCatalog}>&#10006;</span>
-          <MonthCatalog />
+          <MonthCatalog categories={this.state.categories} />
 
         </Modal>
 

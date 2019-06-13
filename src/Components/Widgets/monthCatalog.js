@@ -6,9 +6,9 @@ import initialData from '../../monthDataExample.json';
 
 class MonthCatalog extends React.Component {
 
-  constructor() {
+  constructor(props) {
     console.log('Month Catalog Constructed!');
-    super();
+    super(props);
 
     this.state = {
       transactionObjects: [],
@@ -23,37 +23,27 @@ class MonthCatalog extends React.Component {
         id:           0
       },
 
-      isSortedByDate:         false,
-      isSortedByDescription:  false,
-      isSortedByAmount:       false,
-      isSortedByCategory:     false,
-      isSortedById:           true,
-      isReverseSort:          false,
-
-      isEditting:   false,
+      isSortedBy: "Id",
+      isEditting: false,
       editId:    0
     }
 
     console.log("Initial count: ", this.state.transactionCount);
 
-    this.toggleSortByDate        = this.toggleSortByDate.bind(this);
-    this.toggleSortByDescription = this.toggleSortByDescription.bind(this);
-    this.toggleSortByAmount      = this.toggleSortByAmount.bind(this);
-    this.toggleSortByCategory    = this.toggleSortByCategory.bind(this);
-    this.toggleSortById          = this.toggleSortById.bind(this);
+    this.sortExpensesBy      = this.sortExpensesBy.bind(this);
 
-    this.append                  = this.append.bind(this);
-    this.remove                  = this.remove.bind(this);
-    this.sortData                = this.sortData.bind(this);
+    this.append              = this.append.bind(this);
+    this.remove              = this.remove.bind(this);
+    this.sortData            = this.sortData.bind(this);
 
-    this.handleEdit              = this.handleEdit.bind(this);
-    this.cancelEdit              = this.cancelEdit.bind(this);
-    this.doneEdit                = this.doneEdit.bind(this);
+    this.handleEdit          = this.handleEdit.bind(this);
+    this.cancelEdit          = this.cancelEdit.bind(this);
+    this.doneEdit            = this.doneEdit.bind(this);
 
-    this.handleDate              = this.handleDate.bind(this);
-    this.handleDescription       = this.handleDescription.bind(this);
-    this.handleAmount            = this.handleAmount.bind(this);
-    this.handleCategory          = this.handleCategory.bind(this);
+    this.handleDate          = this.handleDate.bind(this);
+    this.handleDescription   = this.handleDescription.bind(this);
+    this.handleAmount        = this.handleAmount.bind(this);
+    this.handleCategory      = this.handleCategory.bind(this);
   }
 
   /* Database Functions */
@@ -96,125 +86,59 @@ class MonthCatalog extends React.Component {
 
   /* Database Sorters */
 
-  sortData = () => {
+  sortData = (argument) => {
     console.log("** sortData called!");
     console.log("   # Sort is reversed = ", this.state.isReverseSort);
     let transactionList = this.state.transactionObjects;
     let sortedTransactions;
-    if( this.state.isSortedByDate )
-    {
-      sortedTransactions = this.state.isReverseSort ?
-                           transactionList.sort( (a,b) => b.date - a.date ) :
-                           transactionList.sort( (a,b) => a.date - b.date );
-      console.log("** Sorted By Date, Sorted Array: ", sortedTransactions);
-      this.setState({ transactionObjects: sortedTransactions });
+    switch( argument ) {
+      case "Date":
+        sortedTransactions = this.state.isReverseSort ?
+                             transactionList.sort( (a,b) => b.date - a.date ) :
+                             transactionList.sort( (a,b) => a.date - b.date );
+        break;
+      case "Description":
+        sortedTransactions = this.state.isReverseSort ?
+                             transactionList.sort( (a,b) => a.description.toUpperCase() < b.description.toUpperCase() ) :
+                             transactionList.sort( (a,b) => a.description.toUpperCase() > b.description.toUpperCase() );
+        break;
+      case "Amount":
+        sortedTransactions = this.state.isReverseSort ?
+                             transactionList.sort( (a,b) => b.amount - a.amount ) :
+                             transactionList.sort( (a,b) => a.amount - b.amount );
+        break;
+      case "Category":
+        sortedTransactions = this.state.isReverseSort ?
+                             transactionList.sort( (a,b) => a.category.toUpperCase() < b.category.toUpperCase() ) :
+                             transactionList.sort( (a,b) => a.category.toUpperCase() > b.category.toUpperCase() );
+        break;
+      default:
+        sortedTransactions = this.state.isReverseSort ?
+                             transactionList.sort( (a,b) => a.id - b.id ) :
+                             transactionList.sort( (a,b) => b.id - a.id );
+        break;
     }
-    else if( this.state.isSortedByDescription )
-    {
-      sortedTransactions = this.state.isReverseSort ?
-                           transactionList.sort( (a,b) => a.description.toUpperCase() < b.description.toUpperCase() ) :
-                           transactionList.sort( (a,b) => a.description.toUpperCase() > b.description.toUpperCase() );
-      this.setState({ transactionObjects: sortedTransactions });
-    }
-    else if( this.state.isSortedByAmount )
-    {
-      sortedTransactions = this.state.isReverseSort ?
-                           transactionList.sort( (a,b) => b.amount - a.amount ) :
-                           transactionList.sort( (a,b) => a.amount - b.amount );
-      this.setState({ transactionObjects: sortedTransactions });
-    }
-    else if( this.state.isSortedByCategory )
-    {
-      sortedTransactions = this.state.isReverseSort ?
-                           transactionList.sort( (a,b) => a.category.toUpperCase() < b.category.toUpperCase() ) :
-                           transactionList.sort( (a,b) => a.category.toUpperCase() > b.category.toUpperCase() );
-      this.setState({ transactionObjects: sortedTransactions });
-    }
-    else if( this.state.isSortedById )
-    {
-      sortedTransactions = this.state.isReverseSort ?
-                           transactionList.sort( (a,b) => a.id - b.id ) :
-                           transactionList.sort( (a,b) => b.id - a.id );
-      this.setState({ transactionObjects: sortedTransactions });
-    }
-    else { console.log("/************* Data unsuccesfully sorted! *************/") }
-    console.log("** sortData Done!");
+    this.setState({
+      transactionObjects: sortedTransactions },
+      console.log("** Sorted By", this.state.isSortedBy, ", Sorted Array: ", sortedTransactions)
+    );
   }
 
-  toggleSortByDate = () => {
-    if( !this.state.isSortedByDate )
+  sortExpensesBy = (argument) => {
+    console.log("Data initialized to sort by", argument, "!");
+    if( this.state.isSortedBy !== argument )
     {
-      console.log("Data initialized to sort by date!");
       this.setState({
-        isSortedByDate:         true,
-        isSortedByDescription:  false,
-        isSortedByAmount:       false,
-        isSortedByCategory:     false,
-        isSortedById:           false,
-        isReverseSort:          false
-      }, this.sortData);
+        isSortedBy:     argument,
+        isReverseSort:  false
+      }, () => { this.sortData(argument) });
     }
-    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
-  }
-  toggleSortByDescription = () => {
-    if( !this.state.isSortedByDescription )
+    else
     {
-      console.log("Data initialized to sort by description!");
-      this.setState({
-        isSortedByDate:         false,
-        isSortedByDescription:  true,
-        isSortedByAmount:       false,
-        isSortedByCategory:     false,
-        isSortedById:           false,
-        isReverseSort:          false
-      }, this.sortData);
+      this.setState( prevState => ({
+        isReverseSort: !prevState.isReverseSort
+      }), () => { this.sortData(argument) })
     }
-    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
-  }
-  toggleSortByAmount = () => {
-    if( !this.state.isSortedByAmount )
-    {
-      console.log("Data initialized to sort by Amount!");
-      this.setState({
-        isSortedByDate:         false,
-        isSortedByDescription:  false,
-        isSortedByAmount:       true,
-        isSortedByCategory:     false,
-        isSortedById:           false,
-        isReverseSort:          false
-      }, this.sortData);
-    }
-    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
-  }
-  toggleSortByCategory = () => {
-    if( !this.state.isSortedByCategory )
-    {
-      console.log("Data initialized to sort by Category!");
-      this.setState({
-        isSortedByDate:         false,
-        isSortedByDescription:  false,
-        isSortedByAmount:       false,
-        isSortedByCategory:     true,
-        isSortedById:           false,
-        isReverseSort:          false
-      }, this.sortData);
-    }
-    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
-  }
-  toggleSortById = () => {
-    if( !this.state.isSortedById )
-    {
-      console.log("Data initialized to sort by Recent!");
-      this.setState({
-        isSortedByDate:         false,
-        isSortedByDescription:  false,
-        isSortedByAmount:       false,
-        isSortedByCategory:     false,
-        isSortedById:           true,
-        isReverseSort:          false
-      }, this.sortData);
-    }
-    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
   }
 
   /* Form handlers */
@@ -294,18 +218,20 @@ class MonthCatalog extends React.Component {
 
     return(
       <div>
-      <NewTransactionForm addTransaction = {this.append} />
+      <NewTransactionForm addTransaction = {this.append}
+                          categoriesList = {this.props.categories} />
 
         <button onClick={this.loadJSON}>LOAD LOCAL JSON DATA</button>
 
-        <button onClick={this.toggleSortByDate}>Sort By Date</button>
-        <button onClick={this.toggleSortByDescription}>Sort By Description</button>
-        <button onClick={this.toggleSortByAmount}>Sort By Amount</button>
-        <button onClick={this.toggleSortByCategory}>Sort By Category</button>
-        <button onClick={this.toggleSortById}>Sort By Recent</button>
+        <button onClick={() => {this.sortExpensesBy( "Date" )}}>Sort By Date</button>
+        <button onClick={() => {this.sortExpensesBy( "Description" )}}>Sort By Description</button>
+        <button onClick={() => {this.sortExpensesBy( "Amount" )}}>Sort By Amount</button>
+        <button onClick={() => {this.sortExpensesBy( "Category" )}}>Sort By Category</button>
+        <button onClick={() => {this.sortExpensesBy( "Id" )}}>Sort By Recent</button>
 
         <CatalogTable transactionObjects = {this.state.transactionObjects}
                       transactionCount   = {this.state.transactionCount}
+                      categories         = {this.props.categories}
                       editData           = {this.state.editData}
 
                       isEditting         = {this.state.isEditting}

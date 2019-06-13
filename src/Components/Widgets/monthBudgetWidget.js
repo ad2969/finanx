@@ -21,6 +21,7 @@ function MonthBudgetWidget( budget, actual, handleEditBudget )
   else if( budgetSaved > 0 ) { budgetStyle = { color: "green" } }
 
   var plannedText = ( budget !== 0 ) ? "" : "No Budget Set";
+      plannedText = ( actual !== 0 ) ? plannedText : "No Expenses";
   var actualText  = ( budget !== 0 ) ? "" : "No Budget Set";
       actualText  = ( actual !== 0 ) ? actualText : "No Expenses";
 

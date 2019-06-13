@@ -13,6 +13,7 @@ class CatalogTable extends React.Component {
       rows.push(
         CatalogTableRow(
           this.props.transactionObjects[i],
+          this.props.categories,
           this.props.editData,
 
           this.props.isEditting,

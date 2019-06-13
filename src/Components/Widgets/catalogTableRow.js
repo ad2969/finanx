@@ -2,6 +2,7 @@ import React from 'react';
 
 function CatalogTableRow(
                   props,
+                  categoriesList,
                   editData,
 
                   isEditting,
@@ -17,7 +18,17 @@ function CatalogTableRow(
                   handleCategory,
                   handleSubmit)
 {
-  if(isEditting && editId === props.id)
+
+  var options = [];
+  for( let i = 0; i < categoriesList.length; i++ ) {
+    options.push(
+      <option key={"table-option-"+i} value={categoriesList[i]}>
+        {categoriesList[i]}
+      </option>
+    );
+  }
+
+  if( isEditting && editId === props.id )
   {
     return(
       <tr key={props.id.toString()}>
@@ -25,12 +36,7 @@ function CatalogTableRow(
         <td><input type="text" value={editData.description} onChange={handleDescription} /></td>
         <td><input type="number" min="0" step=".01" pattern="^\d+(?:\.\d{1,2})?$" value={editData.amount} onChange={handleAmount} /></td>
         <td><select name="Category" value={editData.category} onChange={handleCategory}>
-          <option value="Food and Groceries">Food and Groceries</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Education">Education</option>
-          <option value="Insurance and Bills">Insurance and Bills</option>
-          <option value="Rent">Rent</option>
-          <option value="Other">Other</option>
+          {options}
         </select></td>
         <td>
           <button onClick={() => doneEdit(props.id)}>&#10004;</button>

@@ -23,6 +23,16 @@ class NewTransactionForm extends React.Component {
   }
 
   render() {
+
+    var options = [];
+    for( let i = 0; i < this.props.categoriesList.length; i++ ) {
+      options.push(
+        <option key={"form-option-"+i} value={this.props.categoriesList[i]}>
+          {this.props.categoriesList[i]}
+        </option>
+      );
+    }
+
     return(
       <form id="transactionForm" onSubmit={this.handleSubmit}>
 
@@ -39,12 +49,7 @@ class NewTransactionForm extends React.Component {
         </label>
 
         <select name="Category" ref='category' >
-          <option value="Food and Groceries">Food and Groceries</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Education">Education</option>
-          <option value="Insurance and Bills">Insurance and Bills</option>
-          <option value="Rent">Rent</option>
-          <option value="Other">Other</option>
+          {options}
         </select>
 
         <input type="submit" value="Add Transaction" />
