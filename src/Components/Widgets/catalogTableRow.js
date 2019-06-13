@@ -1,6 +1,7 @@
 import React from 'react';
 
-function CatalogTableRow(props,
+function CatalogTableRow(
+                  props,
                   editData,
 
                   isEditting,

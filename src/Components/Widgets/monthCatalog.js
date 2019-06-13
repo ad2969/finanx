@@ -2,7 +2,7 @@ import React from 'react';
 import CatalogTable from './catalogTable';
 import NewTransactionForm from './newTransactionForm';
 
-import initialData from '../monthDataExample.json';
+import initialData from '../../monthDataExample.json';
 
 class MonthCatalog extends React.Component {
 

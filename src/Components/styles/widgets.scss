@@ -1,0 +1,88 @@
+// Horizontal Bar Graph Animation
+@mixin stagger-anim-delay($i, $initial-delay, $stagger-delay) {
+  @while $i > 0 {
+    &:nth-of-type(#{$i}) {
+      animation-delay: $initial-delay + $stagger-delay * $i }
+    $i: $i - 1;
+  }
+}
+
+/******* General Classes *******/
+
+.floatContainer {
+  max-width: 90%;
+  max-height: 90%;
+  margin: 0 auto;
+}
+
+.stats, .desc { text-align: center; }
+.stats { white-space: nowrap }
+
+.editContainer {
+  cursor: pointer;
+
+  .editContainerText {
+    position: absolute;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5; }
+
+  &:hover .editContainerBody {
+    opacity: 0.75;
+    color: rgba(0, 0, 0, 0.1); }
+  &:hover .editContainerText { opacity: 1 }
+}
+
+/******* Specific Widget Styles *******/
+
+// Transaction Table Styles
+
+.table__transactions {
+  width: 100%;
+  border: 1px solid black;
+
+  th, td {
+    border: 1px solid black;
+    padding: 15px;
+  }
+}
+
+// Bar Chart Styles
+
+.chart__bar--horiz {
+  position: relative;
+  ul {
+    position: relative;
+    padding: 1%;
+    background-color: #aaa;}
+  li {
+    position: relative;
+    padding-left: 10%;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    list-style-type: none; }
+  .chart__bar__line {
+    $border-rad: 10%;
+    position: absolute;
+    height: 100%;
+    margin-left: 5%;
+    border-top-right-radius: $border-rad;
+    border-bottom-right-radius: $border-rad;
+    opacity: 0;
+    animation: 1s anim-float-in ease forwards; }
+
+  @include stagger-anim-delay(2, 1s, 0.2s);
+}
+
+
+//Keyframes
+@keyframes anim-float-in {
+  0% {
+    transform: translateX(-200%);
+    opacity: 1; }
+  100% {
+    transform: translateX(0);
+    opacity: 1; }
+}

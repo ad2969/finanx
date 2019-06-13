@@ -1,5 +1,6 @@
 import React from 'react';
 import CatalogTableRow from './catalogTableRow';
+import '../styles/widgets.scss';
 
 class CatalogTable extends React.Component {
 
@@ -33,7 +34,7 @@ class CatalogTable extends React.Component {
     // console.log("    ** Number of rows:", this.props.transactionObjects.length);
 
     return(
-      <table>
+      <table className="table__transactions">
         <tbody>
 
           <tr>
