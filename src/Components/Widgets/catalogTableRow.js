@@ -30,7 +30,7 @@ function CatalogTableRow(
           <option value="Education">Education</option>
           <option value="Insurance and Bills">Insurance and Bills</option>
           <option value="Rent">Rent</option>
-          <option value="Other" selected>Other</option>
+          <option value="Other">Other</option>
         </select></td>
         <td>
           <button onClick={() => doneEdit(props.id)}>&#10004;</button>

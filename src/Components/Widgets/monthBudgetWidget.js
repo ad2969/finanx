@@ -37,8 +37,8 @@ function MonthBudgetWidget( budget, actual, handleEditBudget )
       <div className={editCointainerClass} onClick={editBudget}>
         <h4 className={editCointainerTextClass}>Add Budget Info</h4>
         <ul className="editContainerBody">
-          <li>Planned&nbsp;:<span className="chart__bar__line" style={plannedStyle}></span> {plannedText}</li>
-          <li>Actual &nbsp;&nbsp;:<span className="chart__bar__line" style={actualStyle}></span> {actualText}</li>
+          <li>Planned&nbsp;:&nbsp;<span className="chart__bar__line" style={plannedStyle}></span> {plannedText}</li>
+          <li>Actual &nbsp;&nbsp;&nbsp;:&nbsp;<span className="chart__bar__line" style={actualStyle}></span> {actualText}</li>
           </ul>
       </div>
     </div>

@@ -7,6 +7,7 @@ import initialData from '../../monthDataExample.json';
 class MonthCatalog extends React.Component {
 
   constructor() {
+    console.log('Month Catalog Constructed!');
     super();
 
     this.state = {
@@ -153,7 +154,7 @@ class MonthCatalog extends React.Component {
         isReverseSort:          false
       }, this.sortData);
     }
-    else { this.setState({ isReverseSort: !this.state.isReverseSort }, this.sortData) }
+    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
   }
   toggleSortByDescription = () => {
     if( !this.state.isSortedByDescription )
@@ -168,7 +169,7 @@ class MonthCatalog extends React.Component {
         isReverseSort:          false
       }, this.sortData);
     }
-    else { this.setState({ isReverseSort: !this.state.isReverseSort }, this.sortData) }
+    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
   }
   toggleSortByAmount = () => {
     if( !this.state.isSortedByAmount )
@@ -183,7 +184,7 @@ class MonthCatalog extends React.Component {
         isReverseSort:          false
       }, this.sortData);
     }
-    else { this.setState({ isReverseSort: !this.state.isReverseSort }, this.sortData) }
+    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
   }
   toggleSortByCategory = () => {
     if( !this.state.isSortedByCategory )
@@ -198,7 +199,7 @@ class MonthCatalog extends React.Component {
         isReverseSort:          false
       }, this.sortData);
     }
-    else { this.setState({ isReverseSort: !this.state.isReverseSort }, this.sortData) }
+    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
   }
   toggleSortById = () => {
     if( !this.state.isSortedById )
@@ -213,7 +214,7 @@ class MonthCatalog extends React.Component {
         isReverseSort:          false
       }, this.sortData);
     }
-    else { this.setState({ isReverseSort: !this.state.isReverseSort }, this.sortData) }
+    else { this.setState( prevState => ({ isReverseSort: !prevState.isReverseSort }), this.sortData) }
   }
 
   /* Form handlers */
@@ -289,7 +290,7 @@ class MonthCatalog extends React.Component {
   render() {
 
     // console.log("Current count: ", this.state.transactionCount);
-    console.log("Printed Array: ", this.state.transactionObjects);
+    // console.log("Printed Array: ", this.state.transactionObjects);
 
     return(
       <div>

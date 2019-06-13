@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 
 import MonthCatalog from './Widgets/monthCatalog';
+import MonthSettings from './User/monthSettings';
 import MonthBudgetWidget from './Widgets/monthBudgetWidget';
 
 // Grid layout is imported (responsive grid)
@@ -37,7 +38,7 @@ const widgetList = [
   },
   {
     widget: "monthBudget",
-    w: 3, h: 2, x: 9, y: 0
+    w: 3, h: 2, x: 9, y: 0, minH: 2
   },
   {
     widget: "monthBudgetExtended",
@@ -49,7 +50,7 @@ const widgetList = [
   },
   {
     widget: "monthPieStats",
-    w: 4, h: 4, x: 5, y: 1
+    w: 4, h: 3, x: 5, y: 1
   },
   {
     widget: "livingCostComparison",
@@ -59,6 +60,7 @@ const widgetList = [
 
 // Modal App Element needs to be set to ensure main app is hidden behind modal
 Modal.setAppElement(document.getElementById('root'));
+
 
 class Month extends React.Component {
 
@@ -70,6 +72,7 @@ class Month extends React.Component {
 
   constructor() {
     super();
+    console.log("Month constructed!");
     this.state = {
       showCatalog: false,
       showSettings: false,
@@ -82,23 +85,34 @@ class Month extends React.Component {
           widget: widgetList[i].widget };
       }),
       layout: [],
-      widgetCounter: 5,
+      widgetCounter: 7,
 
       numDays: 30,
 
-      budgetExpense: 0,
+      userSet: {
+        budgetExpense: 0,
+        startingBalance: 0,
+      },
       info: {
         totalExpense: 0,
         totalIncome: 0,
-        startingBalance: 0,
       }
     };
 
     this.handleOpenCatalog    = this.handleOpenCatalog.bind(this);
     this.handleCloseCatalog   = this.handleCloseCatalog.bind(this);
+    this.handleOpenSettings   = this.handleOpenSettings.bind(this);
+    this.handleCloseSettings  = this.handleCloseSettings.bind(this);
+
+    this.handleEditBudget     = this.handleEditBudget.bind(this);
+    this.handleSettingsChange = this.handleSettingsChange.bind(this);
+
     this.addWidget            = this.addWidget.bind(this);
     this.onBreakpointChange   = this.onBreakpointChange.bind(this);
+    this.onRemoveItem         = this.onRemoveItem.bind(this);
   }
+
+  /* Main handlers */
 
   handleOpenCatalog = () => {
     this.setState({ showCatalog: true });
@@ -120,6 +134,19 @@ class Month extends React.Component {
     this.handleOpenSettings();
   }
 
+  // Settings
+
+  handleSettingsChange = ( newSettings ) => {
+    this.setState( prevState => ({
+      userSet: {
+        ...prevState.userSet,
+        budgetExpense: newSettings.budgetExpense,
+      },
+    }), this.handleCloseSettings);
+  }
+
+  /* Grid Functions */
+
   createWidget = (el) => {
     let newWidget;
     switch( el.widget ) {
@@ -128,7 +155,7 @@ class Month extends React.Component {
       case "monthSummary":
         break;
       case "monthBudget":
-        newWidget = MonthBudgetWidget( this.state.budgetExpense, this.state.info.totalExpense, this.handleEditBudget );
+        newWidget = MonthBudgetWidget( this.state.userSet.budgetExpense, this.state.info.totalExpense, this.handleEditBudget );
         break;
       case "monthBudgetExtended":
         break;
@@ -156,8 +183,8 @@ class Month extends React.Component {
 
     let newWidget = {
       i: this.state.widgetCounter.toString(),
-      x: (this.state.items.length * 2) % (this.state.cols || 12),
-      y: Infinity, // puts it at the very bottom
+      //x: (this.state.items.length * 2) % (this.state.cols || 12),
+      x: Infinity, y: Infinity, // puts it at the very bottom
       widget: widget,
     };
     switch( widget ) {
@@ -191,10 +218,10 @@ class Month extends React.Component {
         break;
       default: break;
     }
-    this.setState({
-      items: this.state.items.concat(newWidget),
-      widgetCounter: this.state.widgetCounter + 1
-    });
+    this.setState( prevState => ({
+      items: prevState.items.concat(newWidget),
+      widgetCounter: prevState.widgetCounter + 1
+    }));
   }
 
   onBreakpointChange = (breakpoint, cols) => {
@@ -210,10 +237,12 @@ class Month extends React.Component {
 
   onRemoveItem = (i) => {
     console.log("removing", i);
-    this.setState({ items: _.reject(this.state.items, { i: i }) });
+    this.setState( prevState => ({
+      items: _.reject(prevState.items, { i: i })
+    }));
   }
 
-  // Transaction Functions
+  /* Transaction Functions */
 
   addExpense = (amount) => {
     this.setState(prevState => ({
@@ -232,15 +261,13 @@ class Month extends React.Component {
     }), console.log("New income value: ", this.state.info.totalExpense));
   }
 
-
   render() {
 
     var averageDailyExpense = this.state.info.totalExpense / this.state.numDays;
-    var endBalance = this.state.startingBalance - this.state.totalExpense + this.state.totalIncome;
+    var endBalance = this.state.userSetstartingBalance - this.state.info.totalExpense + this.state.info.totalIncome;
 
     return (
       <div>
-        <button onClick={this.addWidget}>Add Item</button>
         <ResponsiveReactGridLayout onLayoutChange={this.onLayoutChange}
                                    onBreakpointChange={this.onBreakpointChange} >
           {_.map(this.state.items, el => this.createWidget(el))}
@@ -263,10 +290,11 @@ class Month extends React.Component {
                onRequestClose = {this.handleCloseSettings} >
 
           <span style={closeButtonStyle} onClick={this.handleCloseSettings}>&#10006;</span>
+          <MonthSettings budget={this.state.userSet.budgetExpense} handleSubmit={this.handleSettingsChange} />
 
         </Modal>
 
-        <div>
+        <div> Add widgets here: (Dropdown menu)
           <button onClick={() => {this.addWidget("monthBudget")}}>Add Budget Widget</button>
         </div>
 
