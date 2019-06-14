@@ -11,7 +11,11 @@
 
 .attentionText { color: rgba(128,0,0,1) }
 .blackText { color: rgba(0,0,0,1) }
-.none { display: none; }
+.none { display: none }
+.clearList {
+  list-style-type: none;
+  padding-bottom: 5px;
+}
 
 .floatContainer {
   max-width: 90%;

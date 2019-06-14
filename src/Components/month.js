@@ -80,8 +80,8 @@ class Month extends React.Component {
     this.state = {
 
       // Modal Status
-      showCatalog: false,
-      showSettings: false,
+      showCatalog:    false,
+      showSettings:   false,
 
       // Transaction Information
       expenseCategories: [
@@ -100,18 +100,21 @@ class Month extends React.Component {
         "Other",
       ],
 
-      expenseTransactions: [],
-      expenseTransactionsCount: 1,
-      incomeTransactions: [],
-      incomeTransactionsCount: 1,
+      expenseTransactions:        [],
+      expenseTransactionsCount:   1,
+      incomeTransactions:         [],
+      incomeTransactionsCount:    1,
 
       userSet: {
-        budgetExpense: 0,
-        startingBalance: 0,
+        budgetExpense:      0,
+        budgetExpanded:     [],
+        isBudgetExpanded:   false,
+        startingBalance:    0,
       },
+
       info: {
-        totalExpense: 0,
-        totalIncome: 0,
+        totalExpense:     0,
+        totalIncome:      0,
       },
 
       // Widget Info
@@ -130,20 +133,34 @@ class Month extends React.Component {
 
     };
 
-    this.handleOpenCatalog    = this.handleOpenCatalog.bind(this);
-    this.handleCloseCatalog   = this.handleCloseCatalog.bind(this);
-    this.handleOpenSettings   = this.handleOpenSettings.bind(this);
-    this.handleCloseSettings  = this.handleCloseSettings.bind(this);
+    this.handleOpenCatalog       = this.handleOpenCatalog.bind(this);
+    this.handleCloseCatalog      = this.handleCloseCatalog.bind(this);
+    this.handleOpenSettings      = this.handleOpenSettings.bind(this);
+    this.handleCloseSettings     = this.handleCloseSettings.bind(this);
 
-    this.handleUpdateExpenses = this.handleUpdateExpenses.bind(this);
-    this.handleUpdateIncome   = this.handleUpdateIncome.bind(this);
+    this.handleUpdateExpenses    = this.handleUpdateExpenses.bind(this);
+    this.handleUpdateIncome      = this.handleUpdateIncome.bind(this);
 
-    this.handleEditBudget     = this.handleEditBudget.bind(this);
-    this.handleSettingsChange = this.handleSettingsChange.bind(this);
+    this.handleEditBudgetFWidget = this.handleEditBudgetFWidget.bind(this);
+    this.handleSettingsChange    = this.handleSettingsChange.bind(this);
 
-    this.addWidget            = this.addWidget.bind(this);
-    this.onBreakpointChange   = this.onBreakpointChange.bind(this);
-    this.onRemoveItem         = this.onRemoveItem.bind(this);
+    this.addWidget               = this.addWidget.bind(this);
+    this.onBreakpointChange      = this.onBreakpointChange.bind(this);
+    this.onRemoveItem            = this.onRemoveItem.bind(this);
+  }
+
+  /* Lifecycle Functions */
+
+  componentDidMount() {
+    console.log("Month Mounted!");
+
+    let newBudget = new Array(this.state.expenseCategories.length).fill(0);
+    this.setState(prevState => ({
+      userSet: {
+        ...prevState.userSet,
+        budgetExpanded: newBudget,
+      }
+    }));
   }
 
   /* Main handlers */
@@ -164,7 +181,7 @@ class Month extends React.Component {
     this.setState({ showSettings: false });
   }
 
-  handleEditBudget = () => {
+  handleEditBudgetFWidget = () => {
     this.handleOpenSettings();
   }
 
@@ -178,31 +195,33 @@ class Month extends React.Component {
     this.setState({
       incomeTransactions: newTransactionList,
       incomeTransactionsCount: transactionCount
-    }, () => { console.log("IncomeW updated!, Array:", this.state.incomeTransactions) });
+    }, () => { console.log("Income updated!, Array:", this.state.incomeTransactions) });
   }
 
   // Settings
 
   handleSettingsChange = ( newSettings ) => {
     this.setState( prevState => ({
-      userSet: {
-        ...prevState.userSet,
-        budgetExpense: newSettings.budgetExpense,
-      },
-    }), this.handleCloseSettings);
+      userSet: newSettings,
+    }), () => { this.handleCloseSettings(); console.log("New settings", this.state.userSet); });
+
   }
 
   /* Grid Functions */
 
-  createWidget = (el) => {
+  createWidget = ( element,
+                   totalExpense,
+                   totalIncome,
+                   averageDailyExpense,
+                   endBalance ) => {
     let newWidget;
-    switch( el.widget ) {
+    switch( element.widget ) {
       case "accountSummary":
         break;
       case "monthSummary":
         break;
       case "monthBudget":
-        newWidget = MonthBudgetWidget( this.state.userSet.budgetExpense, this.state.info.totalExpense, this.handleEditBudget );
+        newWidget = MonthBudgetWidget( this.state.userSet.budgetExpense, totalExpense, this.handleEditBudgetFWidget );
         break;
       case "monthBudgetExtended":
         break;
@@ -215,11 +234,11 @@ class Month extends React.Component {
       default: break;
     }
     return (
-      <div key={el.i} data-grid={el}>
+      <div key={element.i} data-grid={element}>
         {newWidget}
         <span className="remove"
               style={removeStyle}
-              onClick={this.onRemoveItem.bind(this, el.i)}
+              onClick={this.onRemoveItem.bind(this, element.i)}
         >x</span>
       </div>
     )
@@ -289,39 +308,28 @@ class Month extends React.Component {
     }));
   }
 
-  /* Transaction Functions */
-
-  addExpense = (amount) => {
-    this.setState(prevState => ({
-      info: {
-        ...prevState.info,
-        totalExpense: this.state.info.totalExpense + amount
-      }
-    }), console.log("New expenses value: ", this.state.info.totalExpense));
-  }
-  addIncome = (amount) => {
-    this.setState(prevState => ({
-      info: {
-        ...prevState.info,
-        totalIncome: this.state.info.totalIncome + amount
-      }
-    }), console.log("New income value: ", this.state.info.totalExpense));
-  }
 
   render() {
 
-    var totalExpense = this.state.expenseTransactions.reduce(
-      (prev, next) => { return(prev.amount + next.amount) }, 0);
-    var totalIncome= this.state.incomeTransactions.reduce(
-      (prev, next) => { return(prev.amount + next.amount) }, 0);
-    var averageDailyExpense = this.state.info.totalExpense / this.state.numDays;
-    var endBalance = this.state.userSetstartingBalance - this.state.info.totalExpense + this.state.info.totalIncome;
+    var totalExpense = (this.state.expenseTransactions.reduce(
+      (counter, next) => counter + Number(next.amount), 0)).tofixed(2);
+    var totalIncome = (this.state.incomeTransactions.reduce(
+      (counter, next) => counter + Number(next.amount), 0)).tofixed(2);
+    var averageDailyExpense = (totalExpense / this.state.numDays).tofixed(2);
+    var endBalance = (this.state.userSet.startingBalance - totalExpense).tofixed(2);
 
     return (
       <div>
-        <ResponsiveReactGridLayout onLayoutChange={this.onLayoutChange}
-                                   onBreakpointChange={this.onBreakpointChange} >
-          {_.map(this.state.items, el => this.createWidget(el))}
+        <ResponsiveReactGridLayout
+            onLayoutChange      = {this.onLayoutChange}
+            onBreakpointChange  = {this.onBreakpointChange} >
+            {_.map(this.state.items, element =>
+              this.createWidget( element,
+                                 totalExpense,
+                                 totalIncome,
+                                 averageDailyExpense,
+                                 endBalance )
+            )}
         </ResponsiveReactGridLayout>
 
         <button onClick={this.handleOpenCatalog}>Open Month</button>
@@ -345,14 +353,13 @@ class Month extends React.Component {
 
         </Modal>
 
-        <button onClick={() => {this.addExpense(100)}}>Add Expense</button>
-        <button onClick={() => {this.addIncome(100)}}>Add Income</button>
-
         <Modal isOpen         = {this.state.showSettings}
                onRequestClose = {this.handleCloseSettings} >
 
           <span style={closeButtonStyle} onClick={this.handleCloseSettings}>&#10006;</span>
-          <MonthSettings budget={this.state.userSet.budgetExpense} handleSubmit={this.handleSettingsChange} />
+          <MonthSettings categoriesList     = {this.state.expenseCategories}
+                         userSetData        = {this.state.userSet}
+                         handleSubmit       = {this.handleSettingsChange} />
 
         </Modal>
 

@@ -42,7 +42,7 @@ class MonthCatalog extends React.Component {
     this.handleCategory      = this.handleCategory.bind(this);
   }
 
-
+  /* Lifecycle Functions */
 
   // Update from upper tree
   componentDidMount() {
