@@ -3,24 +3,26 @@ import '../styles/widgets.scss';
 
 function MonthBudgetWidget( budget, actual, handleEditBudget )
 {
+  console.log("[widget] Monthly Budget Initialized!");
+
   var plannedStyle = { width: 0 };
   var actualStyle = { width: 0 };
 
   if( budget !== 0 && actual !== 0  ) {
     plannedStyle = {
-      width: (budget >= actual) ? "50%" : (budget/actual * 50) + "%",
+      width: (budget >= actual) ? "50%" : ((budget/actual * 50) % 50) + "%",
       backgroundColor: "green" }
     actualStyle = {
-      width: (budget >= actual) ? (actual/budget * 50) + "%" : "50%",
+      width: (budget >= actual) ? ((actual/budget * 50) % 50) + "%" : "50%",
       backgroundColor: "crimson" }
   }
 
   var budgetSaved = budget - actual;
   var budgetStyle = { color: "black" }
   var budgetSummaryText = "Your Budget Summary:";
-  if( budgetSaved < 0) { budgetStyle = { color: "red" };
+  if( budget !== 0 && actual !== 0 && budgetSaved < 0) { budgetStyle = { color: "red" };
                          budgetSummaryText = "Budget Not Beat!" }
-  else if( budgetSaved > 0 ) { budgetStyle = { color: "green" };
+  else if( budget !== 0 && actual !== 0 && budgetSaved > 0 ) { budgetStyle = { color: "green" };
                                budgetSummaryText = "Budget Beat!" }
   else if( budget !== 0 && actual !== 0 && budgetSaved === 0 ) { budgetSummaryText = "You're on budget!" }
 
@@ -38,7 +40,7 @@ function MonthBudgetWidget( budget, actual, handleEditBudget )
   return(
     <div>
       <h3 className="desc">{budgetSummaryText}</h3>
-      <h1 className="stats" style={budgetStyle}>${budgetSaved}</h1>
+      <h1 className="stats" style={budgetStyle}>${budgetSaved.toFixed(2)}</h1>
       <p className="desc">Saved this month</p>
       <div className={editContainerClass} onClick={editBudget}>
         <h4 className={editContainerTextClass}>Add Budget Info</h4>

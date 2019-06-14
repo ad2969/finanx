@@ -312,11 +312,11 @@ class Month extends React.Component {
   render() {
 
     var totalExpense = (this.state.expenseTransactions.reduce(
-      (counter, next) => counter + Number(next.amount), 0)).tofixed(2);
+      (counter, next) => counter + Number(next.amount), 0));
     var totalIncome = (this.state.incomeTransactions.reduce(
-      (counter, next) => counter + Number(next.amount), 0)).tofixed(2);
-    var averageDailyExpense = (totalExpense / this.state.numDays).tofixed(2);
-    var endBalance = (this.state.userSet.startingBalance - totalExpense).tofixed(2);
+      (counter, next) => counter + Number(next.amount), 0));
+    var averageDailyExpense = (totalExpense / this.state.numDays);
+    var endBalance = (this.state.userSet.startingBalance - totalExpense);
 
     return (
       <div>
