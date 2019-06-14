@@ -8,9 +8,6 @@ function MonthPieStatWidget( categoriesList,
                              currency )
 {
   console.log("[widget] Monthly Pie Chart Initialized!");
-  console.log("categoriesList:", categoriesList);
-  console.log("transactionList:", transactionList);
-  console.log("totalexpenditure:", totalExpenditure);
 
   var expenditureData = [];
 
@@ -23,7 +20,7 @@ function MonthPieStatWidget( categoriesList,
   transactionList.forEach( element => {
     for(let i = 0; i < categoriesList.length; i++)
     {
-      if(element.category === categoriesList[i]) expenditureData[i].amount += element.amount;
+      if( element.category === categoriesList[i] ) expenditureData[i].amount += element.amount;
     }
   });
 

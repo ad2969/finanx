@@ -57,7 +57,7 @@ const widgetList = [
   },
   {
     widget: "monthPieStats",
-    w: 4, h: 3, x: 5, y: 1
+    w: 4, h: 3, x: 5, y: 1, minW: 3, minH: 3
   },
   {
     widget: "livingCostComparison",
