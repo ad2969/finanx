@@ -47,14 +47,18 @@
 
 // Transaction Table Styles
 
-.table__transactions {
+.table__transactions, .table__budget {
   width: 100%;
   border: 1px solid black;
+  table-layout: fixed;
 
   th, td {
     border: 1px solid black;
     padding: 15px;
   }
+}
+.table__budget {
+  font-size: 75%;
 }
 
 // Bar Chart Styles

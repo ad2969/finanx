@@ -9,7 +9,7 @@ class MonthCatalog extends React.Component {
     super(props);
 
     this.state = {
-      transactionObjects: [],
+      sortedTransactions: [],
       transactionCount: 1,
 
       editData:
@@ -48,15 +48,19 @@ class MonthCatalog extends React.Component {
   componentDidMount() {
     console.log("Month Catalog Mounted!");
     this.setState({
-      transactionObjects: this.props.realData,
-      transactionCount: this.props.realCount
-    });
+      sortedTransactions: this.props.realData,
+      transactionCount: this.props.realCount,
+      isSortedBy: this.props.isSortedBy,
+    }, () => { this.sortData(this.props.isSortedBy) });
+
   }
 
   // Update to upper tree
   componentWillUnmount() {
     console.log("Month Catalog Unmounted! Updating tree....");
-    this.props.updateData( this.state.transactionObjects, this.state.transactionCount );
+    // let unsortedTransactions = this.state.sortedTransactions.sort( (a,b) => b.id - a.id )
+    // this.props.updateData(unsortedTransactions, this.state.transactionCount);
+    this.props.updateData(this.state.sortedTransactions, this.state.transactionCount);
   }
 
   /* Database Functions */
@@ -67,19 +71,21 @@ class MonthCatalog extends React.Component {
       data.push( this.props.initialData[i] )
     }
     this.setState(prevState => ({
-      transactionObjects: data,
+      sortedTransactions: data,
       transactionCount: prevState.transactionCount + data.length
-    }), () => { console.log("External Data Loaded!, Array:", this.state.transactionObjects) });
+    }), () => { this.sortData(this.props.isSortedBy);
+                console.log("External Data Loaded!, Array:", this.state.sortedTransactions) }
+    );
   }
 
   append = ( transaction ) =>  {
 
-    let transactionList = this.state.transactionObjects;
+    let transactionList = this.state.sortedTransactions;
     transaction.id = this.state.transactionCount;
 
     transactionList.push(transaction);
     this.setState(prevState => ({
-      transactionObjects: transactionList,
+      sortedTransactions: transactionList,
       transactionCount: prevState.transactionCount + 1
     }));
 
@@ -88,7 +94,7 @@ class MonthCatalog extends React.Component {
   }
 
   remove = ( transactionId ) =>  {
-    let transactionList = this.state.transactionObjects;
+    let transactionList = this.state.sortedTransactions;
     let index = transactionList.findIndex( transaction => transaction.id === transactionId );
     console.log("Index:", index);
     if( index === -1 )
@@ -97,7 +103,7 @@ class MonthCatalog extends React.Component {
       return 0;
     }
     transactionList.splice(index, 1);
-    this.setState({ transactionObjects: transactionList });
+    this.setState({ sortedTransactions: transactionList });
     console.log("** Transaction removed!");
   }
 
@@ -123,7 +129,7 @@ class MonthCatalog extends React.Component {
   sortData = (argument) => {
     // console.log("** sortData called!");
     console.log("   # Sort is reversed = ", this.state.isReverseSort);
-    let transactionList = this.state.transactionObjects;
+    let transactionList = this.state.sortedTransactions;
     let sortedTransactions;
     switch( argument ) {
       case "Date":
@@ -153,7 +159,7 @@ class MonthCatalog extends React.Component {
         break;
     }
     this.setState({
-      transactionObjects: sortedTransactions },
+      sortedTransactions: sortedTransactions },
       () => { console.log("** Sorted By", this.state.isSortedBy, ", Sorted Array: ", sortedTransactions) }
     );
   }
@@ -182,7 +188,7 @@ class MonthCatalog extends React.Component {
   }
 
   handleEdit = ( transactionId ) => {
-    let transactionList = this.state.transactionObjects;
+    let transactionList = this.state.sortedTransactions;
     let index = transactionList.findIndex( transaction => transaction.id === transactionId );
     let data = {
       date:         transactionList[index].date,
@@ -200,7 +206,7 @@ class MonthCatalog extends React.Component {
   }
   cancelEdit = () => { this.setState({ isEditting: false }); }
   doneEdit = ( transactionId ) => {
-    let transactionList = this.state.transactionObjects;
+    let transactionList = this.state.sortedTransactions;
     let index = transactionList.findIndex( transaction => transaction.id === transactionId );
 
     transactionList[index].date         = this.state.editData.date;
@@ -209,7 +215,7 @@ class MonthCatalog extends React.Component {
     transactionList[index].category     = this.state.editData.category;
 
     this.setState({
-      transactionObjects: transactionList,
+      sortedTransactions: transactionList,
       isEditting: false
     });
   }
@@ -232,7 +238,7 @@ class MonthCatalog extends React.Component {
 
     // console.log("Month Catalog Rendered!");
     // console.log("Current count: ", this.state.transactionCount);
-    // console.log("Printed Array: ", this.state.transactionObjects);
+    // console.log("Printed Array: ", this.state.sortedTransactions);
 
     return(
       <div>
@@ -247,7 +253,7 @@ class MonthCatalog extends React.Component {
         <button onClick={() => {this.toggleSortBy( "Category" )}}>Sort By Category</button>
         <button onClick={() => {this.toggleSortBy( "Id" )}}>Sort By Recent</button>
 
-        <CatalogTable transactionObjects = {this.state.transactionObjects}
+        <CatalogTable transactionObjects = {this.state.sortedTransactions}
                       transactionCount   = {this.state.transactionCount}
                       categories         = {this.props.categories}
                       editData           = {this.state.editData}

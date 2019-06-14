@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 class NewTransactionForm extends React.Component {
 
   constructor(props) {

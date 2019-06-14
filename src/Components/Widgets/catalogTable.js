@@ -1,6 +1,5 @@
 import React from 'react';
 import CatalogTableRow from './catalogTableRow';
-import '../styles/widgets.scss';
 
 class CatalogTable extends React.Component {
 

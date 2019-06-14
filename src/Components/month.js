@@ -4,6 +4,8 @@ import Modal from 'react-modal';
 import MonthCatalog from './Widgets/monthCatalog';
 import MonthSettings from './User/monthSettings';
 import MonthBudgetWidget from './Widgets/monthBudgetWidget';
+import MonthBudgetExtendedWidget from './Widgets/monthBudgetExtendedWidget';
+import './styles/widgets.scss';
 
 import expensesData from '../monthExpensesExample.json';
 import incomeData from '../monthIncomeExample.json';
@@ -42,11 +44,11 @@ const widgetList = [
   },
   {
     widget: "monthBudget",
-    w: 3, h: 2, x: 9, y: 0, minH: 2
+    w: 3, h: 2, x: 9, y: 0, minW: 2, minH: 2
   },
   {
     widget: "monthBudgetExtended",
-    w: 3, h: 3, x: 9, y: 2
+    w: 3, h: 3, x: 9, y: 2, minW: 3, minH: 3
   },
   {
     widget: "monthGraphicalStats",
@@ -110,6 +112,7 @@ class Month extends React.Component {
         budgetExpanded:     [],
         isBudgetExpanded:   false,
         startingBalance:    0,
+        defaultSort:        "Id",
       },
 
       info: {
@@ -224,6 +227,10 @@ class Month extends React.Component {
         newWidget = MonthBudgetWidget( this.state.userSet.budgetExpense, totalExpense, this.handleEditBudgetFWidget );
         break;
       case "monthBudgetExtended":
+        newWidget =
+        <MonthBudgetExtendedWidget transactionList = {this.state.expenseTransactions}
+                                   categoriesList  = {this.state.expenseCategories}
+                                   budgetExtended  = {this.state.userSet.budgetExpanded} />;
         break;
       case "monthGraphicalStats":
         break;
@@ -343,13 +350,15 @@ class Month extends React.Component {
                         initialData = {expensesData}
                         realData    = {this.state.expenseTransactions}
                         realCount   = {this.state.expenseTransactionsCount}
-                        updateData  = {this.handleUpdateExpenses}/>
+                        updateData  = {this.handleUpdateExpenses}
+                        isSortedBy  = {this.state.userSet.defaultSort} />
           <h1>Income</h1>
           <MonthCatalog categories  = {this.state.incomeCategories}
                         initialData = {incomeData}
                         realData    = {this.state.incomeTransactions}
                         realCount   = {this.state.incomeTransactionsCount}
-                        updateData  = {this.handleUpdateIncome}/>
+                        updateData  = {this.handleUpdateIncome}
+                        isSortedBy  = {this.state.userSet.defaultSort} />
 
         </Modal>
 

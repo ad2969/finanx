@@ -38,7 +38,7 @@ function CatalogTableRow(
         <td><select name="Category" value={editData.category} onChange={handleCategory}>
           {options}
         </select></td>
-        <td>.tofixed(2)
+        <td>
           <button onClick={() => doneEdit(props.id)}>&#10004;</button>
           <button onClick={() => cancelEdit()}>&#10006;</button>
         </td>

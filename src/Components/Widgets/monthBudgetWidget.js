@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/widgets.scss';
 
 function MonthBudgetWidget( budget, actual, handleEditBudget )
 {

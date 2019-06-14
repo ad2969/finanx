@@ -12,7 +12,8 @@ class MonthSettings extends React.Component {
         budgetExpense:    0,
         budgetExpanded:   [],
         isBudgetExpanded: false,
-        startingBalance:  0
+        startingBalance:  0,
+        defaultSort: "Id",
       },
       temporaryExpense: 0,
 
@@ -20,6 +21,7 @@ class MonthSettings extends React.Component {
 
     this.handleBudget       = this.handleBudget.bind(this);
     this.toggleExpandBudget = this.toggleExpandBudget.bind(this);
+    this.handleDefaultSort  = this.handleDefaultSort.bind(this);
 
     console.log("Budget passed: ", this.props.userSetData.budgetExpense);
     console.log("* Expanded Budget: ", this.props.userSetData.budgetExpanded);
@@ -36,6 +38,7 @@ class MonthSettings extends React.Component {
         budgetExpanded:   this.props.userSetData.budgetExpanded,
         isBudgetExpanded: this.props.userSetData.isBudgetExpanded,
         startingBalance:  this.props.userSetData.startingBalance,
+        defaultSort:      this.props.userSetData.defaultSort,
       },
       temporaryExpense: this.props.userSetData.budgetExpense
     });
@@ -75,12 +78,37 @@ class MonthSettings extends React.Component {
     }));
   }
 
+  handleDefaultSort = (event) => {
+    event.preventDefault();
+    let data = this.state.data;
+    data.defaultSort = event.target.value;
+    this.setState({ data: data });
+  }
+
   render() {
 
-    var options = [];
+    // Budget Layouts
+
+    var totalBudget =
+      this.state.data.isBudgetExpanded ?
+      <label> Budget for Expenses: &nbsp;&nbsp;
+        <input data-ref     = "total"
+               type         = "number" min= "0"
+               value        = {this.state.data.budgetExpense}
+               onChange     = {this.handleBudget}
+               readOnly />
+      </label> :
+      <label> Budget for Expenses: &nbsp;&nbsp;
+        <input data-ref     = "total"
+               type         = "number" min= "0"
+               value        = {this.state.data.budgetExpense}
+               onChange     = {this.handleBudget} />
+      </label>
+
+    var expandedBudgetOptions = [];
     for( let i = 0; i < this.props.categoriesList.length; i++ ) {
-      options.push(
-        <li key = {"budget-setting-"+i} className="clearList">{this.props.categoriesList[i]}:
+      expandedBudgetOptions.push(
+        <li key = {"budget-setting-"+i} className="clearList">{this.props.categoriesList[i]}: &nbsp;&nbsp;
           <input data-ref     = {i}
                  type         = "number" min= "0"
                  defaultValue = {this.state.data.budgetExpanded[i]}
@@ -89,43 +117,55 @@ class MonthSettings extends React.Component {
       );
     }
 
-    var totalBudget =
-      this.state.data.isBudgetExpanded ?
-      <label> Budget for Expenses:
-        <input data-ref     = "total"
-               type         = "number" min= "0"
-               value        = {this.state.data.budgetExpense}
-               onChange     = {this.handleBudget}
-               readOnly />
-      </label> :
-      <label> Budget for Expenses:
-        <input data-ref     = "total"
-               type         = "number" min= "0"
-               value        = {this.state.data.budgetExpense}
-               onChange     = {this.handleBudget} />
-      </label>
-
     var expandedBudget =
         this.state.data.isBudgetExpanded ?
         <ul>
-          {options}
+          {expandedBudgetOptions}
           <button type="button" onClick={this.toggleExpandBudget}>Collapse Budget!</button>
         </ul> :
         <div>
           <button type="button" onClick={this.toggleExpandBudget}>Expand Budget!</button>
         </div>;
 
+
+    // Default Sort Layouts
+
+    var sortOptions = [];
+    var columnList = ["Date", "Description", "Amount", "Category", "Id"]
+    for( let i = 0; i < columnList.length; i++ ) {
+      sortOptions.push(
+        <option key={"sort-option-"+i} value={columnList[i] === "Id" ? "Recent" : columnList[i]}>
+          {columnList[i] === "Id" ? "Recent" : columnList[i]}
+        </option>
+      );
+    }
+
     return(
-      <div>
-        <form onSubmit={() => this.props.handleSubmit(this.state.data)}>
+      <form onSubmit={() => this.props.handleSubmit(this.state.data)}>
 
-          {totalBudget}
-          {expandedBudget}
+        <h1> Month Settings </h1>
 
-          <div><input type="submit" value="Save Changes" /></div>
+        <h2>Budget</h2>
 
-        </form>
-      </div>
+        {totalBudget}
+        {expandedBudget}
+
+        <h2>Display</h2>
+
+        <div>
+          <h4>Personalize your default sorting method:</h4>
+          <select name="Category"
+                  value={ this.state.data.defaultSort === "Id" ?
+                          "Recent" : this.state.data.defaultSort }
+                  onChange={this.handleDefaultSort}>
+            {sortOptions}
+          </select>
+        </div>
+
+        <h1></h1>
+        <div><input type="submit" value="Save Changes" /></div>
+
+      </form>
     )
   }
 }
