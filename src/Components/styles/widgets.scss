@@ -17,11 +17,12 @@
   padding-bottom: 5px;
 }
 
-.floatContainer {
+.floatContainer, .floatContainer--smaller {
   max-width: 90%;
   max-height: 90%;
   margin: 0 auto;
 }
+.floatContainer--smaller { width: 80%; height: 80%; }
 
 .stats, .desc { text-align: center; }
 .stats { white-space: nowrap }

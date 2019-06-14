@@ -17,10 +17,6 @@ class MonthBudgetExtendedWidget extends React.Component {
         if(element.category === this.props.categoriesList[i]) expenseList[i] += element.amount
       }
     });
-    console.log("expenses:", this.props.transactionList);
-    console.log("categories:", this.props.categoriesList);
-    console.log("budget:", this.props.budgetExtended);
-    console.log("expenses:", expenseList);
 
     let table = BudgetTable( this.props.categoriesList,
                              this.props.budgetExtended,

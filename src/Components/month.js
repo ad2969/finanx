@@ -5,6 +5,7 @@ import MonthCatalog from './Widgets/monthCatalog';
 import MonthSettings from './User/monthSettings';
 import MonthBudgetWidget from './Widgets/monthBudgetWidget';
 import MonthBudgetExtendedWidget from './Widgets/monthBudgetExtendedWidget';
+import MonthPieStatWidget from './Widgets/monthPieStatWidget'
 import './styles/widgets.scss';
 
 import expensesData from '../monthExpensesExample.json';
@@ -235,6 +236,7 @@ class Month extends React.Component {
       case "monthGraphicalStats":
         break;
       case "monthPieStats":
+        newWidget = MonthPieStatWidget( this.state.expenseCategories, this.state.expenseTransactions, totalExpense, "$" );
         break;
       case "livingCostComparison":
         break;

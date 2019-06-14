@@ -9,10 +9,6 @@ function BudgetTable(
 
   var rows = [];
 
-  console.log("** categories:", categoriesList);
-  console.log("** budget:", budgetList);
-  console.log("** expenses:", expenseList);
-
   for(let i = 0; i < categoriesList.length; i++ )
   {
     rows.push(

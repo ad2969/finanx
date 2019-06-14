@@ -20,7 +20,7 @@ function CatalogTable( transactionObjects,
 
   var rows = [];
 
-  for(let i = 0; i < this.props.transactionObjects.length; i++ )
+  for(let i = 0; i < transactionObjects.length; i++ )
   {
     rows.push(
       CatalogTableRow(
