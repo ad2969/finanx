@@ -15,8 +15,7 @@ function CatalogTableRow(
                   handleDate,
                   handleDescription,
                   handleAmount,
-                  handleCategory,
-                  handleSubmit)
+                  handleCategory )
 {
 
   var options = [];

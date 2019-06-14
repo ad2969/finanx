@@ -253,22 +253,21 @@ class MonthCatalog extends React.Component {
         <button onClick={() => {this.toggleSortBy( "Category" )}}>Sort By Category</button>
         <button onClick={() => {this.toggleSortBy( "Id" )}}>Sort By Recent</button>
 
-        <CatalogTable transactionObjects = {this.state.sortedTransactions}
-                      transactionCount   = {this.state.transactionCount}
-                      categories         = {this.props.categories}
-                      editData           = {this.state.editData}
+        {CatalogTable( this.state.sortedTransactions,
+                       this.state.transactionCount,
+                       this.props.categories,
+                       this.state.editData,
+                       this.state.isEditting,
+                       this.state.editId,
+                       this.handleEdit,
+                       this.cancelEdit,
+                       this.doneEdit,
+                       this.remove,
 
-                      isEditting         = {this.state.isEditting}
-                      editId             = {this.state.editId}
-                      handleEdit         = {this.handleEdit}
-                      cancelEdit         = {this.cancelEdit}
-                      doneEdit           = {this.doneEdit}
-                      handleRemove       = {this.remove}
-
-                      handleDate         = {this.handleDate}
-                      handleDescription  = {this.handleDescription}
-                      handleAmount       = {this.handleAmount}
-                      handleCategory     = {this.handleCategory} />
+                       this.handleDate,
+                       this.handleDescription,
+                       this.handleAmount,
+                       this.handleCategory )}
 
       </div>
     )
