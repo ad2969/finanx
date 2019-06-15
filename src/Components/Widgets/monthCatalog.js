@@ -96,7 +96,6 @@ class MonthCatalog extends React.Component {
   remove = ( transactionId ) =>  {
     let transactionList = this.state.sortedTransactions;
     let index = transactionList.findIndex( transaction => transaction.id === transactionId );
-    console.log("Index:", index);
     if( index === -1 )
     {
       console.log("/************* Error: Transaction not found! *************/");
@@ -168,7 +167,7 @@ class MonthCatalog extends React.Component {
 
   handleDate = (event) => {
     let updatedForm = this.state.editData;
-    updatedForm.date = event.target.value;
+    updatedForm.date = Number(event.target.value);
     this.setState({ editData: updatedForm });
   }
   handleDescription = (event) => {
@@ -178,7 +177,7 @@ class MonthCatalog extends React.Component {
   }
   handleAmount = (event) => {
     let updatedForm = this.state.editData;
-    updatedForm.amount = event.target.value;
+    updatedForm.amount = Number(event.target.value);
     this.setState({ editData: updatedForm });
   }
   handleCategory = (event) => {
@@ -227,7 +226,7 @@ class MonthCatalog extends React.Component {
       date:         1,
       description:  "Enter Description",
       amount:       0,
-      category:     "Other",
+      category:     this.props.categories[0],
       id:           0
     }
     this.setState({ formData: resettedForm });

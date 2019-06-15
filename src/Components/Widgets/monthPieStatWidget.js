@@ -9,46 +9,53 @@ function MonthPieStatWidget( categoriesList,
 {
   console.log("[widget] Monthly Pie Chart Initialized!");
 
-  var expenditureData = [];
-
-  for(let i = 0; i < categoriesList.length; i++) {
-    let data = { p: 0, amount:0, currency: currency }
-    data.label = categoriesList[i];
-    expenditureData.push(data);
-  }
-
-  transactionList.forEach( element => {
-    for(let i = 0; i < categoriesList.length; i++)
-    {
-      if( element.category === categoriesList[i] ) expenditureData[i].amount += element.amount;
-    }
-  });
-
-  for(let i = 0; i < categoriesList.length; i++) {
-    expenditureData[i].y = (expenditureData[i].amount / totalExpenditure * 100).toFixed(2);
-    expenditureData[i].amount = expenditureData[i].amount.toFixed(2);
-  }
-
-  var options = {
-    exportEnabled:    false,
-    animationEnabled: true,
-    backgroundColor:  "#ccc",
-    legend: {verticalAlign: "bottom"},
-    data:             [{
-      type:               "pie",
-      radius:             "90%",
-      startAngle:         75,
-      toolTipContent:     "<b>{label}</b>: {amount}",
-      showInLegend:       true,
-      legendText:         "{label}",
-      indexLabelFontSize: 12,
-      indexLabel:         "{label} - {y}%",
-      dataPoints:         expenditureData
-    }]
-  }
-
   if( totalExpenditure !== 0 )
   {
+    var expenditureData = [];
+
+    for(let i = 0; i < categoriesList.length; i++) {
+      let data = { y: 0, amount:0, currency: currency }
+      data.label = categoriesList[i];
+      expenditureData.push(data);
+    }
+
+    transactionList.forEach( element => {
+      for(let i = 0; i < categoriesList.length; i++)
+      {
+        if( element.category === categoriesList[i] ) expenditureData[i].amount += Number(element.amount);
+      }
+    });
+
+    // Filters out empty/null array elements
+
+    expenditureData = expenditureData.filter(el => {
+      return (Number(el.amount) !== 0)
+    });
+
+    // Calculates percentage and displays two decimal places
+
+    for(let i = 0; i < expenditureData.length; i++) {
+      expenditureData[i].y = (Number(expenditureData[i].amount) / Number(totalExpenditure) * 100).toFixed(2);
+      expenditureData[i].amount = Number(expenditureData[i].amount).toFixed(2);
+    }
+
+    var options = {
+      exportEnabled:    false,
+      animationEnabled: true,
+      backgroundColor:  "#ccc",
+      data:             [{
+        type:               "pie",
+        radius:             "90%",
+        startAngle:         75,
+        toolTipContent:     "<b>{label}</b>: {currency}{amount}",
+        showInLegend:       true,
+        legendText:         "{label}",
+        indexLabelFontSize: 12,
+        indexLabel:         "{label} - {y}%",
+        dataPoints:         expenditureData
+      }]
+    }
+
     return(
       <div>
         <h3 className="desc" style={{"marginBottom":"0"}}>Monthly Spendings by Category</h3>

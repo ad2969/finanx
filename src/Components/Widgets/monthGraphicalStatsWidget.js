@@ -49,7 +49,7 @@ class MonthGraphicalStatsWidget extends React.Component {
     var expenseChartData = [];
     var incomeChartData = [];
     var balanceChartData = [];
-    var balance = this.props.startingBalance;
+    var balance = Number(this.props.startingBalance);
 
     if(this.props.isAccountActive) {
       expenseChartData.push({ x: 0, y: 0, toolTipContent: "Initial" });
@@ -63,12 +63,12 @@ class MonthGraphicalStatsWidget extends React.Component {
       let income = 0;
 
       this.props.expenditureList.forEach( element => {
-        if(element.date === i) expenses += element.amount;
+        if(Number(element.date) === i) expenses += Number(element.amount);
       });
       expenseChartData.push({ x: i, y: expenses });
 
       this.props.incomeList.forEach( element => {
-        if(element.date === i) income += element.amount;
+        if(element.date === i) income += Number(element.amount);
       });
       incomeChartData.push({ x: i, y: income });
 
@@ -130,6 +130,15 @@ class MonthGraphicalStatsWidget extends React.Component {
       dataPoints:     balanceChartData
     });
 
+    var budgetCheckbox = this.props.isAccountActive ?
+        <label> &nbsp;&nbsp;&nbsp; Show Balance? &nbsp;
+          <input type           = "checkbox"
+                 value          = {this.state.isBalanceDisplayed}
+                 defaultChecked = {this.state.isIncomeDisplayed}
+                 onChange       = {this.toggleBalanceDisplay} />
+        </label> :
+        ""
+
     if( this.props.totalExpenditure !== 0 | this.props.totalIncome !== 0 )
     {
       return (
@@ -154,12 +163,7 @@ class MonthGraphicalStatsWidget extends React.Component {
                      onChange       = {this.toggleIncomeDisplay} />
 
             </label>
-            <label> &nbsp;&nbsp;&nbsp; Show Balance? &nbsp;
-              <input type           = "checkbox"
-                     value          = {this.state.isBalanceDisplayed}
-                     defaultChecked = {this.state.isIncomeDisplayed}
-                     onChange       = {this.toggleBalanceDisplay} />
-            </label>
+            {budgetCheckbox}
           </div>
 
         </div>

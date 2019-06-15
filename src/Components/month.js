@@ -116,6 +116,7 @@ class Month extends React.Component {
         startingBalance:    0,
         isAccountActive:    false,
         defaultSort:        "Id",
+        currency:           "$",
       },
 
       info: {
@@ -230,14 +231,16 @@ class Month extends React.Component {
         newWidget =
         MonthBudgetWidget( this.state.userSet.budgetExpense,
                            totalExpense,
-                           this.handleEditBudgetFWidget );
+                           this.handleEditBudgetFWidget,
+                           this.state.userSet.currency );
         break;
       case "monthBudgetExtended":
         newWidget =
         <MonthBudgetExtendedWidget
                   transactionList = {this.state.expenseTransactions}
                   categoriesList  = {this.state.expenseCategories}
-                  budgetExtended  = {this.state.userSet.budgetExpanded} />;
+                  budgetExtended  = {this.state.userSet.budgetExpanded}
+                  currency        = {this.state.userSet.currency} />;
         break;
       case "monthGraphicalStats":
         newWidget =
@@ -249,14 +252,14 @@ class Month extends React.Component {
                   numberOfDays      = {this.state.numDays}
                   startingBalance   = {this.state.userSet.startingBalance}
                   isAccountActive   = {this.state.userSet.isAccountActive}
-                  currency          = "$" />
+                  currency          = {this.state.userSet.currency} />
         break;
       case "monthPieStats":
         newWidget =
         MonthPieStatWidget( this.state.expenseCategories,
                             this.state.expenseTransactions,
                             totalExpense,
-                            "$" );
+                            this.state.userSet.currency );
         break;
       case "livingCostComparison":
         break;
@@ -399,7 +402,10 @@ class Month extends React.Component {
         </div>
 
         <div> Add widgets here: (Dropdown menu)
-          <button onClick={() => {this.addWidget("monthBudget")}}>Add Budget Widget</button>
+          <button onClick={() => {this.addWidget("monthBudget")}}>Budget Widget</button>
+          <button onClick={() => {this.addWidget("monthBudgetExtended")}}>Extended Budget Widget</button>
+          <button onClick={() => {this.addWidget("monthGraphicalStats")}}>Asset Flow Widget</button>
+          <button onClick={() => {this.addWidget("monthPieStats")}}>Expenditure Chart Widget</button>
         </div>
 
       </div>

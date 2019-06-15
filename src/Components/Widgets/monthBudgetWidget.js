@@ -1,6 +1,6 @@
 import React from 'react';
 
-function MonthBudgetWidget( budget, actual, handleEditBudget )
+function MonthBudgetWidget( budget, actual, handleEditBudget, currency )
 {
   console.log("[widget] Monthly Budget Initialized!");
 
@@ -9,10 +9,10 @@ function MonthBudgetWidget( budget, actual, handleEditBudget )
 
   if( budget !== 0 && actual !== 0  ) {
     plannedStyle = {
-      width: (budget >= actual) ? "50%" : ((budget/actual * 50) % 50) + "%",
+      width: (budget >= actual) ? "50%" : ((Number(budget)/Number(actual) * 50) % 50) + "%",
       backgroundColor: "green" }
     actualStyle = {
-      width: (budget >= actual) ? ((actual/budget * 50) % 50) + "%" : "50%",
+      width: (budget >= actual) ? ((Number(actual)/Number(budget) * 50) % 50) + "%" : "50%",
       backgroundColor: "crimson" }
   }
 
@@ -39,7 +39,7 @@ function MonthBudgetWidget( budget, actual, handleEditBudget )
   return(
     <div>
       <h3 className="desc">{budgetSummaryText}</h3>
-      <h1 className="stats" style={budgetStyle}>${budgetSaved.toFixed(2)}</h1>
+      <h1 className="stats" style={budgetStyle}>{currency}{budgetSaved.toFixed(2)}</h1>
       <p className="desc">Saved this month</p>
       <div className={editContainerClass} onClick={editBudget}>
         <h4 className={editContainerTextClass}>Add Budget Info</h4>

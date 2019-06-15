@@ -50,7 +50,7 @@ function CatalogTableRow(
       <tr key={props.id.toString()}>
         <td>{props.date}</td>
         <td>{props.description}</td>
-        <td>{props.amount.toFixed(2)}</td>
+        <td>{Number(props.amount).toFixed(2)}</td>
         <td>{props.category}</td>
         <td>
           <button onClick={() => handleEdit(props.id)}><span role="img" aria-label="lr=pencil">&#9998;</span></button>

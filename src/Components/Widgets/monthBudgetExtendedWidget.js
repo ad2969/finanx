@@ -21,7 +21,8 @@ class MonthBudgetExtendedWidget extends React.Component {
 
     let table = BudgetTable( this.props.categoriesList,
                              this.props.budgetExtended,
-                             expenseList )
+                             expenseList,
+                             this.props.currency )
 
     return(
       <div>

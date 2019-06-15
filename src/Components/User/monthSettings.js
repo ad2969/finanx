@@ -15,14 +15,17 @@ class MonthSettings extends React.Component {
         startingBalance:  0,
         isAccountActive:  false,
         defaultSort:      "Id",
+        currency:         "$"
       },
       temporaryExpense: 0,
 
     }
 
-    this.handleBudget       = this.handleBudget.bind(this);
-    this.toggleExpandBudget = this.toggleExpandBudget.bind(this);
-    this.handleDefaultSort  = this.handleDefaultSort.bind(this);
+    this.handleBudget             = this.handleBudget.bind(this);
+    this.toggleExpandBudget       = this.toggleExpandBudget.bind(this);
+    this.handleDefaultSort        = this.handleDefaultSort.bind(this);
+    this.handleAccountActivation  = this.handleAccountActivation.bind(this);
+    this.handleStartingBalance    = this.handleStartingBalance.bind(this);
   }
 
   /* Lifecycle Functions */
@@ -37,6 +40,7 @@ class MonthSettings extends React.Component {
         startingBalance:  this.props.userSetData.startingBalance,
         isAccountActive:  this.props.userSetData.isAccountActive,
         defaultSort:      this.props.userSetData.defaultSort,
+        currency:         this.props.userSetData.currency,
       },
       temporaryExpense: this.props.userSetData.budgetExpense
     });
@@ -99,6 +103,13 @@ class MonthSettings extends React.Component {
     this.setState({ data: data });
   }
 
+  handleCurrency = (event) => {
+    event.preventDefault();
+    let data = this.state.data;
+    data.currency = event.target.value;
+    this.setState({ data: data });
+  }
+
   render() {
 
     // Budget Layouts
@@ -119,10 +130,10 @@ class MonthSettings extends React.Component {
         this.state.data.isBudgetExpanded ?
         <ul>
           {expandedBudgetOptions}
-          <button type="button" onClick={this.toggleExpandBudget}>Collapse Budget!</button>
+          <p><button type="button" onClick={this.toggleExpandBudget}>Collapse Budget!</button></p>
         </ul> :
         <div>
-          <button type="button" onClick={this.toggleExpandBudget}>Expand Budget!</button>
+          <p><button type="button" onClick={this.toggleExpandBudget}>Expand Budget!</button></p>
         </div>;
 
     // Default Sort Layouts
@@ -153,25 +164,37 @@ class MonthSettings extends React.Component {
         </label>
         {expandedBudget}
 
-        <h2>Display</h2>
+        <h2>Display & Personalization</h2>
 
         <div>
+
+          <h4></h4>
+          <label>Enter the currency of this account: &nbsp;&nbsp;
+            <input type         = "text"
+                   minlength    = "1"
+                   maxlength    = "4"
+                   size         = "3"
+                   defaultValue = {this.props.userSetData.currency}
+                   onChange     = {this.handleCurrency} />
+          </label>
+
           <h4>Personalize your default sorting method:</h4>
-          <select name      = "Category"
+          <label>Sort Transactions By: &nbsp;<select name      = "Category"
                   value     = { this.state.data.defaultSort === "Id" ?
                                 "Recent" : this.state.data.defaultSort }
                   onChange  = {this.handleDefaultSort}>
             {sortOptions}
-          </select>
+          </select></label>
         </div>
 
         <h2>Account</h2>
 
         <div>
-          <div> Activate Account? &nbsp;&nbsp;
-            <input type         = "checkbox"
-                   value        = {this.state.data.isAccountActive}
-                   onChange     = {this.handleAccountActivation} />
+          <div> Enable Balance Tracking? &nbsp;&nbsp;
+            <input type           = "checkbox"
+                   value          = {this.state.data.isAccountActive}
+                   defaultChecked = {this.props.userSetData.isAccountActive}
+                   onChange       = {this.handleAccountActivation} />
           </div>
           <div> Enter Initial Account Balance: &nbsp;&nbsp;
             <input type         = "number" min= "0"
@@ -181,8 +204,7 @@ class MonthSettings extends React.Component {
           </div>
         </div>
 
-        <h1></h1>
-        <div><input type="submit" value="Save Changes" /></div>
+        <h1><input type="submit" value="Save Changes" /></h1>
 
       </form>
     )

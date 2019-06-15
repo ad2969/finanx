@@ -4,7 +4,8 @@ import BudgetTableRow from './budgetTableRow';
 function BudgetTable(
         categoriesList,
         budgetList,
-        expenseList )
+        expenseList,
+        currency )
 {
 
   var rows = [];
@@ -16,7 +17,8 @@ function BudgetTable(
         categoriesList[i],
         budgetList[i],
         expenseList[i],
-        i ));
+        i,
+        currency ));
   }
 
   return(
