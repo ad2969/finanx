@@ -7,6 +7,7 @@ import MonthBudgetWidget from './Widgets/monthBudgetWidget';
 import MonthBudgetExtendedWidget from './Widgets/monthBudgetExtendedWidget';
 import MonthPieStatWidget from './Widgets/monthPieStatWidget'
 import MonthGraphicalStatsWidget from './Widgets/monthGraphicalStatsWidget'
+import MonthSummaryWidget from './Widgets/monthSummaryWidget'
 import './styles/widgets.scss';
 
 import expensesData from '../monthExpensesExample.json';
@@ -226,6 +227,14 @@ class Month extends React.Component {
       case "accountSummary":
         break;
       case "monthSummary":
+        newWidget =
+        MonthSummaryWidget( totalExpense,
+                            totalIncome,
+                            this.state.userSet.startingBalance,
+                            endBalance,
+                            averageDailyExpense,
+                            this.state.userSet.isAccountActive,
+                            this.state.userSet.currency );
         break;
       case "monthBudget":
         newWidget =
@@ -252,7 +261,7 @@ class Month extends React.Component {
                   numberOfDays      = {this.state.numDays}
                   startingBalance   = {this.state.userSet.startingBalance}
                   isAccountActive   = {this.state.userSet.isAccountActive}
-                  currency          = {this.state.userSet.currency} />
+                  currency          = {this.state.userSet.currency} />;
         break;
       case "monthPieStats":
         newWidget =
@@ -402,6 +411,7 @@ class Month extends React.Component {
         </div>
 
         <div> Add widgets here: (Dropdown menu)
+          <button onClick={() => {this.addWidget("monthSummary")}}>Month Summary</button>
           <button onClick={() => {this.addWidget("monthBudget")}}>Budget Widget</button>
           <button onClick={() => {this.addWidget("monthBudgetExtended")}}>Extended Budget Widget</button>
           <button onClick={() => {this.addWidget("monthGraphicalStats")}}>Asset Flow Widget</button>

@@ -16,8 +16,12 @@
   list-style-type: none;
   padding-bottom: 5px;
 }
+.shadedContainer, .shadedContainer--circle {
+  background-color: #aaa; }
+.shadedContainer { border-radius: 100%; }
 
 .floatContainer, .floatContainer--smaller {
+  position: relative;
   max-width: 90%;
   max-height: 90%;
   margin: 0 auto;
