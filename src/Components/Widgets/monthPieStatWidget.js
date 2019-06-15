@@ -29,8 +29,6 @@ function MonthPieStatWidget( categoriesList,
     expenditureData[i].amount = expenditureData[i].amount.toFixed(2);
   }
 
-  console.log("Pie Data:", expenditureData);
-
   var options = {
     exportEnabled:    false,
     animationEnabled: true,
@@ -48,8 +46,6 @@ function MonthPieStatWidget( categoriesList,
       dataPoints:         expenditureData
     }]
   }
-
-  console.log(options);
 
   if( totalExpenditure !== 0 )
   {

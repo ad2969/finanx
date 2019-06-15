@@ -3,12 +3,13 @@ import BudgetTable from './budgetTable';
 
 class MonthBudgetExtendedWidget extends React.Component {
 
-  constructor(props) {
-    console.log("[widget] Monthly Budget Extended Initialized!");
-    super(props);
-  }
+  // constructor(props) {
+    // console.log("[widget] Monthly Budget Extended Constructed!");
+    // super(props);
+  // }
 
   render() {
+    console.log("[widget] Monthly Budget Extended Initialized!");
 
     let expenseList = new Array(this.props.categoriesList.length).fill(0);
     this.props.transactionList.forEach( element => {

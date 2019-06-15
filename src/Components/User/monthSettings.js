@@ -13,7 +13,8 @@ class MonthSettings extends React.Component {
         budgetExpanded:   [],
         isBudgetExpanded: false,
         startingBalance:  0,
-        defaultSort: "Id",
+        isAccountActive:  false,
+        defaultSort:      "Id",
       },
       temporaryExpense: 0,
 
@@ -22,22 +23,19 @@ class MonthSettings extends React.Component {
     this.handleBudget       = this.handleBudget.bind(this);
     this.toggleExpandBudget = this.toggleExpandBudget.bind(this);
     this.handleDefaultSort  = this.handleDefaultSort.bind(this);
-
-    console.log("Budget passed: ", this.props.userSetData.budgetExpense);
-    console.log("* Expanded Budget: ", this.props.userSetData.budgetExpanded);
-    console.log("* BudgetExpanded Bool:", this.props.userSetData.isBudgetExpanded);
   }
 
   /* Lifecycle Functions */
 
   componentDidMount() {
-    console.log("Month Settings mounted!");
+    console.log("Month Settings mounted!, old settings:", this.props.userSetData);
     this.setState({
       data: {
         budgetExpense:    this.props.userSetData.budgetExpense,
         budgetExpanded:   this.props.userSetData.budgetExpanded,
         isBudgetExpanded: this.props.userSetData.isBudgetExpanded,
         startingBalance:  this.props.userSetData.startingBalance,
+        isAccountActive:  this.props.userSetData.isAccountActive,
         defaultSort:      this.props.userSetData.defaultSort,
       },
       temporaryExpense: this.props.userSetData.budgetExpense
@@ -85,25 +83,25 @@ class MonthSettings extends React.Component {
     this.setState({ data: data });
   }
 
+  handleAccountActivation = () => {
+    this.setState(prevState => ({
+      data: {
+        ...prevState.data,
+        isAccountActive: !prevState.data.isAccountActive
+      }
+    }));
+  }
+
+  handleStartingBalance = (event) => {
+    event.preventDefault();
+    let data = this.state.data;
+    data.startingBalance = event.target.value;
+    this.setState({ data: data });
+  }
+
   render() {
 
     // Budget Layouts
-
-    var totalBudget =
-      this.state.data.isBudgetExpanded ?
-      <label> Budget for Expenses: &nbsp;&nbsp;
-        <input data-ref     = "total"
-               type         = "number" min= "0"
-               value        = {this.state.data.budgetExpense}
-               onChange     = {this.handleBudget}
-               readOnly />
-      </label> :
-      <label> Budget for Expenses: &nbsp;&nbsp;
-        <input data-ref     = "total"
-               type         = "number" min= "0"
-               value        = {this.state.data.budgetExpense}
-               onChange     = {this.handleBudget} />
-      </label>
 
     var expandedBudgetOptions = [];
     for( let i = 0; i < this.props.categoriesList.length; i++ ) {
@@ -127,7 +125,6 @@ class MonthSettings extends React.Component {
           <button type="button" onClick={this.toggleExpandBudget}>Expand Budget!</button>
         </div>;
 
-
     // Default Sort Layouts
 
     var sortOptions = [];
@@ -147,19 +144,41 @@ class MonthSettings extends React.Component {
 
         <h2>Budget</h2>
 
-        {totalBudget}
+        <label> Budget for Expenses: &nbsp;&nbsp;
+          <input data-ref     = "total"
+                 type         = "number" min= "0"
+                 value        = {this.state.data.budgetExpense}
+                 onChange     = {this.handleBudget}
+                 disabled     = {this.state.data.isBudgetExpanded} />
+        </label>
         {expandedBudget}
 
         <h2>Display</h2>
 
         <div>
           <h4>Personalize your default sorting method:</h4>
-          <select name="Category"
-                  value={ this.state.data.defaultSort === "Id" ?
-                          "Recent" : this.state.data.defaultSort }
-                  onChange={this.handleDefaultSort}>
+          <select name      = "Category"
+                  value     = { this.state.data.defaultSort === "Id" ?
+                                "Recent" : this.state.data.defaultSort }
+                  onChange  = {this.handleDefaultSort}>
             {sortOptions}
           </select>
+        </div>
+
+        <h2>Account</h2>
+
+        <div>
+          <div> Activate Account? &nbsp;&nbsp;
+            <input type         = "checkbox"
+                   value        = {this.state.data.isAccountActive}
+                   onChange     = {this.handleAccountActivation} />
+          </div>
+          <div> Enter Initial Account Balance: &nbsp;&nbsp;
+            <input type         = "number" min= "0"
+                   value        = {this.state.data.startingBalance}
+                   onChange     = {this.handleStartingBalance}
+                   disabled     = {!this.state.data.isAccountActive}/>
+          </div>
         </div>
 
         <h1></h1>

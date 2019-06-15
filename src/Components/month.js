@@ -113,6 +113,7 @@ class Month extends React.Component {
         budgetExpanded:     [],
         isBudgetExpanded:   false,
         startingBalance:    0,
+        isAccountActive:    false,
         defaultSort:        "Id",
       },
 
@@ -193,13 +194,13 @@ class Month extends React.Component {
     this.setState({
       expenseTransactions: newTransactionList,
       expenseTransactionsCount: transactionCount
-    }, () => { console.log("Expenses updated!, Array:", this.state.expenseTransactions) });
+    }, () => { console.log("** Expenses updated!, new list:", this.state.expenseTransactions) });
   }
   handleUpdateIncome = ( newTransactionList, transactionCount ) => {
     this.setState({
       incomeTransactions: newTransactionList,
       incomeTransactionsCount: transactionCount
-    }, () => { console.log("Income updated!, Array:", this.state.incomeTransactions) });
+    }, () => { console.log("** Income updated!, new list:", this.state.incomeTransactions) });
   }
 
   // Settings
@@ -254,7 +255,7 @@ class Month extends React.Component {
   }
 
   addWidget = ( widget ) => {
-    console.log("adding", this.state.widgetCounter, ":", widget );
+    console.log("** adding widget:", this.state.widgetCounter, ":", widget );
 
     let newWidget = {
       i: this.state.widgetCounter.toString(),
@@ -311,7 +312,7 @@ class Month extends React.Component {
   }
 
   onRemoveItem = (i) => {
-    console.log("removing", i);
+    console.log("** removing widget:", i);
     this.setState( prevState => ({
       items: _.reject(prevState.items, { i: i })
     }));
