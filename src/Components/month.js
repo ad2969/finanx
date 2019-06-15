@@ -6,6 +6,7 @@ import MonthSettings from './User/monthSettings';
 import MonthBudgetWidget from './Widgets/monthBudgetWidget';
 import MonthBudgetExtendedWidget from './Widgets/monthBudgetExtendedWidget';
 import MonthPieStatWidget from './Widgets/monthPieStatWidget'
+import MonthGraphicalStatsWidget from './Widgets/monthGraphicalStatsWidget'
 import './styles/widgets.scss';
 
 import expensesData from '../monthExpensesExample.json';
@@ -53,7 +54,7 @@ const widgetList = [
   },
   {
     widget: "monthGraphicalStats",
-    w: 5, h: 2, x: 0, y: 3
+    w: 5, h: 3, x: 0, y: 3, minW: 3, minH: 3
   },
   {
     widget: "monthPieStats",
@@ -226,18 +227,36 @@ class Month extends React.Component {
       case "monthSummary":
         break;
       case "monthBudget":
-        newWidget = MonthBudgetWidget( this.state.userSet.budgetExpense, totalExpense, this.handleEditBudgetFWidget );
+        newWidget =
+        MonthBudgetWidget( this.state.userSet.budgetExpense,
+                           totalExpense,
+                           this.handleEditBudgetFWidget );
         break;
       case "monthBudgetExtended":
         newWidget =
-        <MonthBudgetExtendedWidget transactionList = {this.state.expenseTransactions}
-                                   categoriesList  = {this.state.expenseCategories}
-                                   budgetExtended  = {this.state.userSet.budgetExpanded} />;
+        <MonthBudgetExtendedWidget
+                  transactionList = {this.state.expenseTransactions}
+                  categoriesList  = {this.state.expenseCategories}
+                  budgetExtended  = {this.state.userSet.budgetExpanded} />;
         break;
       case "monthGraphicalStats":
+        newWidget =
+        <MonthGraphicalStatsWidget
+                  expenditureList   = {this.state.expenseTransactions}
+                  incomeList        = {this.state.incomeTransactions}
+                  totalExpenditure  = {totalExpense}
+                  totalIncome       = {totalIncome}
+                  numberOfDays      = {this.state.numDays}
+                  startingBalance   = {this.state.userSet.startingBalance}
+                  isAccountActive   = {this.state.userSet.isAccountActive}
+                  currency          = "$" />
         break;
       case "monthPieStats":
-        newWidget = MonthPieStatWidget( this.state.expenseCategories, this.state.expenseTransactions, totalExpense, "$" );
+        newWidget =
+        MonthPieStatWidget( this.state.expenseCategories,
+                            this.state.expenseTransactions,
+                            totalExpense,
+                            "$" );
         break;
       case "livingCostComparison":
         break;
