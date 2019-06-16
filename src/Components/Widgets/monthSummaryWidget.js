@@ -15,10 +15,10 @@ function MonthSummaryWidget( totalExpense,
   var information =
     <div>
       <p>Total Expense:
-        <h4>{currency}{Number(totalExpense).toFixed(2)}</h4>
+        <strong> {currency}{Number(totalExpense).toFixed(2)}</strong>
       </p>
       <p>Total Income:
-        <h4>{currency}{Number(totalIncome).toFixed(2)}</h4>
+        <strong> {currency}{Number(totalIncome).toFixed(2)}</strong>
       </p>
     </div>
   var column;
@@ -44,10 +44,12 @@ function MonthSummaryWidget( totalExpense,
     }
     column =
       <table style={{tableLayout:"fixed", width:"100%"}}>
-        <tr style={{"width":"100%"}}>
-          <th><CanvasJSChart options={options} /></th>
-          <th>{information}</th>
-        </tr>
+        <tbody>
+          <tr style={{"width":"100%"}}>
+            <th><CanvasJSChart options={options} /></th>
+            <th>{information}</th>
+          </tr>
+        </tbody>
       </table>
   }
   else
@@ -63,13 +65,15 @@ function MonthSummaryWidget( totalExpense,
 
     column =
       <table style={{tableLayout:"fixed", width:"100%"}}>
-        <tr>
-          <th className="shadedContainer">
-            <h3>Total Net:</h3>
-            <h1 style={netStyle}>{net}</h1>
-          </th>
-          <th>{information}</th>
-        </tr>
+        <tbody>
+          <tr>
+            <th className="shadedContainer">
+              <h3>Total Net:</h3>
+              <h1 style={netStyle}>{net}</h1>
+            </th>
+            <th>{information}</th>
+          </tr>
+        </tbody>
       </table>
   }
 
@@ -77,7 +81,9 @@ function MonthSummaryWidget( totalExpense,
     <div className="floatContainer">
       <h3 className="desc" style={{"marginBottom":"0"}}>Month Summary</h3>
       {column}
-      <p className="stats">Average Daily Expense: {currency}{Number(averageDailyExpense).toFixed(2)}</p>
+      <p className="stats">Average Daily Expense:
+        <strong> {currency}{Number(averageDailyExpense).toFixed(2)}</strong>
+      </p>
     </div>
   )
 }

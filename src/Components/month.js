@@ -43,7 +43,7 @@ const widgetList = [
   },
   {
     widget: "monthSummary",
-    w: 5, h: 2, x: 0, y: 1
+    w: 5, h: 2, x: 0, y: 1, minW: 2, minH: 2
   },
   {
     widget: "monthBudget",
