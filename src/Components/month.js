@@ -5,10 +5,9 @@ import MonthCatalog from './Widgets/monthCatalog';
 import MonthSettings from './User/monthSettings';
 import MonthBudgetWidget from './Widgets/monthBudgetWidget';
 import MonthBudgetExtendedWidget from './Widgets/monthBudgetExtendedWidget';
-import MonthPieStatWidget from './Widgets/monthPieStatWidget';
-import MonthGraphicalStatsWidget from './Widgets/monthGraphicalStatsWidget';
-import MonthSummaryWidget from './Widgets/monthSummaryWidget';
-import AverageLivingCostWidget from './Widgets/averageLivingCostWidget';
+import MonthPieStatWidget from './Widgets/monthPieStatWidget'
+import MonthGraphicalStatsWidget from './Widgets/monthGraphicalStatsWidget'
+import MonthSummaryWidget from './Widgets/monthSummaryWidget'
 import './styles/widgets.scss';
 
 import expensesData from '../monthExpensesExample.json';
@@ -64,7 +63,7 @@ const widgetList = [
   },
   {
     widget: "livingCostComparison",
-    w: 4, h: 1, x: 5, y: 0, minW: 3, minH: 1
+    w: 4, h: 1, x: 5, y: 0
   }
 ]
 
@@ -272,8 +271,6 @@ class Month extends React.Component {
                             this.state.userSet.currency );
         break;
       case "livingCostComparison":
-        newWidget =
-        AverageLivingCostWidget( null, "Vancouver", this.state.userSet.currency );
         break;
       default: break;
     }
@@ -419,7 +416,6 @@ class Month extends React.Component {
           <button onClick={() => {this.addWidget("monthBudgetExtended")}}>Extended Budget Widget</button>
           <button onClick={() => {this.addWidget("monthGraphicalStats")}}>Asset Flow Widget</button>
           <button onClick={() => {this.addWidget("monthPieStats")}}>Expenditure Chart Widget</button>
-          <button onClick={() => {this.addWidget("livingCostComparison")}}>Living Costs Widget</button>
         </div>
 
       </div>
