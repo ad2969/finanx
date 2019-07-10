@@ -1,24 +1,29 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-import MonthCatalog from './Widgets/monthCatalog';
-import MonthSettings from './User/monthSettings';
-import MonthBudgetWidget from './Widgets/monthBudgetWidget';
-import MonthBudgetExtendedWidget from './Widgets/monthBudgetExtendedWidget';
-import MonthPieStatWidget from './Widgets/monthPieStatWidget'
-import MonthGraphicalStatsWidget from './Widgets/monthGraphicalStatsWidget'
-import MonthSummaryWidget from './Widgets/monthSummaryWidget'
-import './styles/widgets.scss';
+// Import widgets
+import MonthCatalog from '../widgets/monthCatalog';
+import MonthSettings from '../user/monthSettings';
+import MonthBudgetWidget from '../widgets/monthBudgetWidget';
+import MonthBudgetExtendedWidget from '../widgets/monthBudgetExtendedWidget';
+import MonthPieStatWidget from '../widgets/monthPieStatWidget'
+import MonthGraphicalStatsWidget from '../widgets/monthGraphicalStatsWidget'
+import MonthSummaryWidget from '../widgets/monthSummaryWidget'
+import widgetList from '../../lists/defaultWidgetList';
 
-import expensesData from '../monthExpensesExample.json';
-import incomeData from '../monthIncomeExample.json';
+// Import sample data
+import expensesData from '../../data/monthExpensesExample.json';
+import incomeData from '../../data/monthIncomeExample.json';
 
 // Grid layout is imported (responsive grid)
 import { WidthProvider, Responsive } from "react-grid-layout";
 import _ from "lodash";
-import '../../node_modules/react-grid-layout/css/styles.css';
-import '../../node_modules/react-resizable/css/styles.css';
-import './styles/month-grid-styles.scss'
+import '../../../node_modules/react-grid-layout/css/styles.css';
+import '../../../node_modules/react-resizable/css/styles.css';
+
+import '../../styles/widgets.scss';
+import '../../styles/month-grid-styles.scss'
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 
@@ -36,40 +41,8 @@ const removeStyle = {
   cursor: "pointer"
 };
 
-const widgetList = [
-  {
-    widget: "accountSummary",
-    w: 5, h: 1, x: 0, y: 0
-  },
-  {
-    widget: "monthSummary",
-    w: 5, h: 2, x: 0, y: 1, minW: 2, minH: 2
-  },
-  {
-    widget: "monthBudget",
-    w: 3, h: 2, x: 9, y: 0, minW: 2, minH: 2
-  },
-  {
-    widget: "monthBudgetExtended",
-    w: 3, h: 3, x: 9, y: 2, minW: 3, minH: 3
-  },
-  {
-    widget: "monthGraphicalStats",
-    w: 5, h: 3, x: 0, y: 3, minW: 3, minH: 3
-  },
-  {
-    widget: "monthPieStats",
-    w: 4, h: 3, x: 5, y: 1, minW: 3, minH: 3
-  },
-  {
-    widget: "livingCostComparison",
-    w: 4, h: 1, x: 5, y: 0
-  }
-]
-
 // Modal App Element needs to be set to ensure main app is hidden behind modal
 Modal.setAppElement(document.getElementById('root'));
-
 
 class Month extends React.Component {
 
@@ -89,21 +62,22 @@ class Month extends React.Component {
       showSettings:   false,
 
       // Transaction Information
-      expenseCategories: [
-        "Food and Groceries",
-        "Entertainment",
-        "Education",
-        "Insurance and Bills",
-        "Rent",
-        "Other",
-      ],
-      incomeCategories: [
-        "Salary",
-        "Interest",
-        "Sponsor",
-        "Investment",
-        "Other",
-      ],
+
+      // expenseCategories: [
+      //   "Food and Groceries",
+      //   "Entertainment",
+      //   "Education",
+      //   "Insurance and Bills",
+      //   "Rent",
+      //   "Other",
+      // ],
+      // incomeCategories: [
+      //   "Salary",
+      //   "Interest",
+      //   "Sponsor",
+      //   "Investment",
+      //   "Other",
+      // ],
 
       expenseTransactions:        [],
       expenseTransactionsCount:   1,
@@ -115,9 +89,8 @@ class Month extends React.Component {
         budgetExpanded:     [],
         isBudgetExpanded:   false,
         startingBalance:    0,
-        isAccountActive:    false,
+        balanceTracking:    false,
         defaultSort:        "Id",
-        currency:           "$",
       },
 
       info: {
@@ -162,7 +135,7 @@ class Month extends React.Component {
   componentDidMount() {
     console.log("Month Mounted!");
 
-    let newBudget = new Array(this.state.expenseCategories.length).fill(0);
+    let newBudget = new Array(this.props.expenseCategories.length).fill(0);
     this.setState(prevState => ({
       userSet: {
         ...prevState.userSet,
@@ -233,23 +206,23 @@ class Month extends React.Component {
                             this.state.userSet.startingBalance,
                             endBalance,
                             averageDailyExpense,
-                            this.state.userSet.isAccountActive,
-                            this.state.userSet.currency );
+                            this.state.userSet.balanceTracking,
+                            this.props.generalSettings.currency );
         break;
       case "monthBudget":
         newWidget =
         MonthBudgetWidget( this.state.userSet.budgetExpense,
                            totalExpense,
                            this.handleEditBudgetFWidget,
-                           this.state.userSet.currency );
+                           this.props.generalSettings.currency );
         break;
       case "monthBudgetExtended":
         newWidget =
         <MonthBudgetExtendedWidget
                   transactionList = {this.state.expenseTransactions}
-                  categoriesList  = {this.state.expenseCategories}
+                  categoriesList  = {this.props.expenseCategories}
                   budgetExtended  = {this.state.userSet.budgetExpanded}
-                  currency        = {this.state.userSet.currency} />;
+                  currency        = {this.props.generalSettings.currency} />;
         break;
       case "monthGraphicalStats":
         newWidget =
@@ -260,15 +233,15 @@ class Month extends React.Component {
                   totalIncome       = {totalIncome}
                   numberOfDays      = {this.state.numDays}
                   startingBalance   = {this.state.userSet.startingBalance}
-                  isAccountActive   = {this.state.userSet.isAccountActive}
-                  currency          = {this.state.userSet.currency} />;
+                  balanceTracking   = {this.state.userSet.balanceTracking}
+                  currency          = {this.props.generalSettings.currency} />;
         break;
       case "monthPieStats":
         newWidget =
-        MonthPieStatWidget( this.state.expenseCategories,
+        MonthPieStatWidget( this.props.expenseCategories,
                             this.state.expenseTransactions,
                             totalExpense,
-                            this.state.userSet.currency );
+                            this.props.generalSettings.currency );
         break;
       case "livingCostComparison":
         break;
@@ -380,19 +353,19 @@ class Month extends React.Component {
 
           <span style={closeButtonStyle} onClick={this.handleCloseCatalog}>&#10006;</span>
           <h1>Expenses</h1>
-          <MonthCatalog categories  = {this.state.expenseCategories}
+          <MonthCatalog categories  = {this.props.expenseCategories}
                         initialData = {expensesData}
                         realData    = {this.state.expenseTransactions}
                         realCount   = {this.state.expenseTransactionsCount}
                         updateData  = {this.handleUpdateExpenses}
-                        isSortedBy  = {this.state.userSet.defaultSort} />
+                        isSortedBy  = {this.props.generalSettings.defaultSort} />
           <h1>Income</h1>
-          <MonthCatalog categories  = {this.state.incomeCategories}
+          <MonthCatalog categories  = {this.props.incomeCategories}
                         initialData = {incomeData}
                         realData    = {this.state.incomeTransactions}
                         realCount   = {this.state.incomeTransactionsCount}
                         updateData  = {this.handleUpdateIncome}
-                        isSortedBy  = {this.state.userSet.defaultSort} />
+                        isSortedBy  = {this.props.generalSettings.defaultSort} />
 
         </Modal>
 
@@ -400,7 +373,7 @@ class Month extends React.Component {
                onRequestClose = {this.handleCloseSettings} >
 
           <span style={closeButtonStyle} onClick={this.handleCloseSettings}>&#10006;</span>
-          <MonthSettings categoriesList     = {this.state.expenseCategories}
+          <MonthSettings categoriesList     = {this.props.expenseCategories}
                          userSetData        = {this.state.userSet}
                          handleSubmit       = {this.handleSettingsChange} />
 

@@ -7,13 +7,16 @@
     "canvasjs": "^1.8.1",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
+    "firebase": "^6.2.4",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-grid-layout": "^0.16.6",
     "react-modal": "^3.8.1",
-    "react-scripts": "3.0.1"
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.0.1",
+    "recompose": "^0.30.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-bootstrap": "^1.0.0-beta.9"
   }
 }

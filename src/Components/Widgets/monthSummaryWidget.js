@@ -1,5 +1,5 @@
 import React from 'react';
-import CanvasJSReact from '../../Assets/canvasjs.react';
+import CanvasJSReact from '../../assets/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 function MonthSummaryWidget( totalExpense,
@@ -7,7 +7,7 @@ function MonthSummaryWidget( totalExpense,
                              startBalance,
                              endBalance,
                              averageDailyExpense,
-                             isAccountActive,
+                             balanceTracking,
                              currency )
 {
   console.log("[widget] Month Summary Widget initialized!");
@@ -23,7 +23,7 @@ function MonthSummaryWidget( totalExpense,
     </div>
   var column;
 
-  if( isAccountActive )
+  if( balanceTracking )
   {
     var options = {
       exportEnabled:    false,
@@ -71,7 +71,7 @@ function MonthSummaryWidget( totalExpense,
               <h3>Total Net:</h3>
               <h1 style={netStyle}>{net}</h1>
             </th>
-            <th>{information}</th>
+            <th style={{border:0}}>{information}</th>
           </tr>
         </tbody>
       </table>

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/widgets.scss';
+import '../../styles/widgets.scss';
 
 class MonthSettings extends React.Component {
 
@@ -13,7 +13,7 @@ class MonthSettings extends React.Component {
         budgetExpanded:   [],
         isBudgetExpanded: false,
         startingBalance:  0,
-        isAccountActive:  false,
+        balanceTracking:  false,
         defaultSort:      "Id",
         currency:         "$"
       },
@@ -38,7 +38,7 @@ class MonthSettings extends React.Component {
         budgetExpanded:   this.props.userSetData.budgetExpanded,
         isBudgetExpanded: this.props.userSetData.isBudgetExpanded,
         startingBalance:  this.props.userSetData.startingBalance,
-        isAccountActive:  this.props.userSetData.isAccountActive,
+        balanceTracking:  this.props.userSetData.balanceTracking,
         defaultSort:      this.props.userSetData.defaultSort,
         currency:         this.props.userSetData.currency,
       },
@@ -91,7 +91,7 @@ class MonthSettings extends React.Component {
     this.setState(prevState => ({
       data: {
         ...prevState.data,
-        isAccountActive: !prevState.data.isAccountActive
+        balanceTracking: !prevState.data.balanceTracking
       }
     }));
   }
@@ -168,7 +168,7 @@ class MonthSettings extends React.Component {
 
         <div>
 
-          <h4></h4>
+          <hr/>
           <label>Enter the currency of this account: &nbsp;&nbsp;
             <input type         = "text"
                    minlength    = "1"
@@ -192,15 +192,15 @@ class MonthSettings extends React.Component {
         <div>
           <div> Enable Balance Tracking? &nbsp;&nbsp;
             <input type           = "checkbox"
-                   value          = {this.state.data.isAccountActive}
-                   defaultChecked = {this.props.userSetData.isAccountActive}
+                   value          = {this.state.data.balanceTracking}
+                   defaultChecked = {this.props.userSetData.balanceTracking}
                    onChange       = {this.handleAccountActivation} />
           </div>
           <div> Enter Initial Account Balance: &nbsp;&nbsp;
             <input type         = "number" min= "0"
                    value        = {this.state.data.startingBalance}
                    onChange     = {this.handleStartingBalance}
-                   disabled     = {!this.state.data.isAccountActive}/>
+                   disabled     = {!this.state.data.balanceTracking}/>
           </div>
         </div>
 

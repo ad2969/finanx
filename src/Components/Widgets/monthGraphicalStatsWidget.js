@@ -1,5 +1,5 @@
 import React from 'react';
-import CanvasJSReact from '../../Assets/canvasjs.react';
+import CanvasJSReact from '../../assets/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class MonthGraphicalStatsWidget extends React.Component {
@@ -19,7 +19,7 @@ class MonthGraphicalStatsWidget extends React.Component {
   }
 
   componentDidMount() {
-    if(this.props.isAccountActive)
+    if(this.props.balanceTracking)
     {
       this.setState({ isBalanceDisplayed: true });
     }
@@ -51,7 +51,7 @@ class MonthGraphicalStatsWidget extends React.Component {
     var balanceChartData = [];
     var balance = Number(this.props.startingBalance);
 
-    if(this.props.isAccountActive) {
+    if(this.props.balanceTracking) {
       expenseChartData.push({ x: 0, y: 0, toolTipContent: "Initial" });
       incomeChartData.push({ x: 0, y: 0, toolTipContent: "Balance:" });
       balanceChartData.push({ x: 0, y: balance, toolTipContent: this.props.currency+"<strong>{y}</strong>" });
@@ -72,7 +72,7 @@ class MonthGraphicalStatsWidget extends React.Component {
       });
       incomeChartData.push({ x: i, y: income });
 
-      if(this.props.isAccountActive) {
+      if(this.props.balanceTracking) {
         balance -= expenses;
         balance += income;
         balanceChartData.push({ x: i, y: balance })
@@ -123,14 +123,14 @@ class MonthGraphicalStatsWidget extends React.Component {
                dataPoints:  incomeChartData }]
     }
 
-    if(this.props.isAccountActive) options.data.push({
+    if(this.props.balanceTracking) options.data.push({
       type:           "line",
       name:           "Balance",
       visible:        this.state.isBalanceDisplayed,
       dataPoints:     balanceChartData
     });
 
-    var budgetCheckbox = this.props.isAccountActive ?
+    var budgetCheckbox = this.props.balanceTracking ?
         <label> &nbsp;&nbsp;&nbsp; Show Balance? &nbsp;
           <input type           = "checkbox"
                  value          = {this.state.isBalanceDisplayed}
