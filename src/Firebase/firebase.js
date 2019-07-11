@@ -17,6 +17,8 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.database();
+
+    this.googleProvider = new app.auth.GoogleAuthProvider();
   }
 
   // Authentication API Functions
@@ -27,6 +29,10 @@ class Firebase {
 
   doSignInWithEmailAndPassword = (email, password) => {
     return this.auth.signInWithEmailAndPassword(email, password);
+  }
+
+  doSignInWithGoogle = () => {
+    return this.auth.signInWithPopup(this.googleProvider);
   }
 
   doSignOut = () => {
