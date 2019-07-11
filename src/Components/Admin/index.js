@@ -1,27 +1,65 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
 import { compose } from 'recompose';
 
+import { withFirebase } from '../../Firebase';
 import { withAuthorization } from '../../Session';
-import { UserList, UserItem } from '../UserData';
+import { UserList } from '../UserData';
+
 import * as ROLES from '../../constants/roles';
-import * as ROUTES from '../../constants/routes';
 
-const AdminPage = () => (
-  <div>
-    <h1>Admin</h1>
-    <p>The Admin Page is accessible by every signed in admin user.</p>
+class AdminPageBase extends React.Component {
+  constructor(props) {
+    super(props);
 
-    <Switch>
-      <Route exact path={ROUTES.ADMIN_DETAILS} component={UserItem} />
-      <Route exact path={ROUTES.ADMIN} component={UserList} />
-    </Switch>
-  </div>
-);
+    this.state = {
+      loading: false,
+      users: [],
+    };
+  }
 
-const condition = authUser =>
+  componentDidMount() {
+    this.setState({ loading: true });
+
+    this.props.firebase.users().on('value', snapshot => {
+      const usersObject = snapshot.val();
+      const usersList = Object.keys(usersObject).map(key => ({
+        ...usersObject[key],
+        uid: key,
+      }));
+
+      this.setState({
+        users: usersList,
+        loading: false,
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.users().off();
+  }
+
+  render() {
+    const { users, loading } = this.state;
+
+    return(
+      <div>
+        <h1 className="stats">Admin</h1>
+        <p className="desc">The Admin Page is accessible by every signed in <strong>admin</strong> user.</p>
+
+        {loading && <div className="desc">Loading . . .</div>}
+
+        {!loading && <UserList users={users} />}
+      </div>
+    )
+  }
+}
+
+const authCondition = authUser =>
   authUser && !!authUser.roles[ROLES.ADMIN];
 
-export default compose(
-  withAuthorization(condition),
-)(AdminPage);
+const AdminPage = compose(
+  withAuthorization(authCondition),
+  withFirebase,
+)(AdminPageBase);
+
+export default AdminPage

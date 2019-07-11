@@ -21,6 +21,6 @@ const AccountPage = () => {
   )
 }
 
-const condition = authUser => !!authUser;
+const authCondition = authUser => !!authUser;
 
-export default withAuthorization(condition)(AccountPage)
+export default withAuthorization(authCondition)(AccountPage)
