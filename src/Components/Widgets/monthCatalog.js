@@ -22,6 +22,7 @@ class MonthCatalog extends React.Component {
       },
 
       isSortedBy: "Id",
+      isReverseSort: false,
       isEditting: false,
       editId:    0
     }

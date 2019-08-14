@@ -81,9 +81,9 @@ class Firebase {
 
   users = () => this.db.ref('users');
 
-  userDat = uid => this.db.ref(`userData/${uid}`);
+  userData = uid => this.db.ref(`userData/${uid}`);
 
-  userData = () => this.db.ref('userData');
+  userDat = () => this.db.ref('userData');
 
 }
 

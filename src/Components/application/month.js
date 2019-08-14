@@ -61,43 +61,6 @@ class Month extends React.Component {
       showCatalog:    false,
       showSettings:   false,
 
-      // Transaction Information
-
-      // expenseCategories: [
-      //   "Food and Groceries",
-      //   "Entertainment",
-      //   "Education",
-      //   "Insurance and Bills",
-      //   "Rent",
-      //   "Other",
-      // ],
-      // incomeCategories: [
-      //   "Salary",
-      //   "Interest",
-      //   "Sponsor",
-      //   "Investment",
-      //   "Other",
-      // ],
-
-      expenseTransactions:        [],
-      expenseTransactionsCount:   1,
-      incomeTransactions:         [],
-      incomeTransactionsCount:    1,
-
-      userSet: {
-        budgetExpense:      0,
-        budgetExpanded:     [],
-        isBudgetExpanded:   false,
-        startingBalance:    0,
-        balanceTracking:    false,
-        defaultSort:        "Id",
-      },
-
-      info: {
-        totalExpense:     0,
-        totalIncome:      0,
-      },
-
       // Widget Info
       items: [0, 1, 2, 3, 4, 5, 6].map((i, key, list) => {
         return {
@@ -119,11 +82,7 @@ class Month extends React.Component {
     this.handleOpenSettings      = this.handleOpenSettings.bind(this);
     this.handleCloseSettings     = this.handleCloseSettings.bind(this);
 
-    this.handleUpdateExpenses    = this.handleUpdateExpenses.bind(this);
-    this.handleUpdateIncome      = this.handleUpdateIncome.bind(this);
-
-    this.handleEditBudgetFWidget = this.handleEditBudgetFWidget.bind(this);
-    this.handleSettingsChange    = this.handleSettingsChange.bind(this);
+    this.handleEditBudgetWidget = this.handleEditBudgetWidget.bind(this);
 
     this.addWidget               = this.addWidget.bind(this);
     this.onBreakpointChange      = this.onBreakpointChange.bind(this);
@@ -134,14 +93,6 @@ class Month extends React.Component {
 
   componentDidMount() {
     console.log("Month Mounted!");
-
-    let newBudget = new Array(this.props.expenseCategories.length).fill(0);
-    this.setState(prevState => ({
-      userSet: {
-        ...prevState.userSet,
-        budgetExpanded: newBudget,
-      }
-    }));
   }
 
   /* Main handlers */
@@ -162,30 +113,23 @@ class Month extends React.Component {
     this.setState({ showSettings: false });
   }
 
-  handleEditBudgetFWidget = () => {
+  handleEditBudgetWidget = () => {
     this.handleOpenSettings();
   }
 
   handleUpdateExpenses = ( newTransactionList, transactionCount ) => {
-    this.setState({
-      expenseTransactions: newTransactionList,
-      expenseTransactionsCount: transactionCount
-    }, () => { console.log("** Expenses updated!, new list:", this.state.expenseTransactions) });
+    this.props.updateExpenses( newTransactionList, transactionCount, this.props.monthId );
   }
   handleUpdateIncome = ( newTransactionList, transactionCount ) => {
-    this.setState({
-      incomeTransactions: newTransactionList,
-      incomeTransactionsCount: transactionCount
-    }, () => { console.log("** Income updated!, new list:", this.state.incomeTransactions) });
+    this.props.updateIncome( newTransactionList, transactionCount, this.props.monthId );
   }
 
   // Settings
 
   handleSettingsChange = ( newSettings ) => {
-    this.setState( prevState => ({
-      userSet: newSettings,
-    }), () => { this.handleCloseSettings(); console.log("New settings", this.state.userSet); });
-
+    this.props.updateSettings( newSettings, this.props.monthId);
+    this.handleCloseSettings();
+    console.log("New settings", this.props.userSet);
   }
 
   /* Grid Functions */
@@ -203,43 +147,43 @@ class Month extends React.Component {
         newWidget =
         MonthSummaryWidget( totalExpense,
                             totalIncome,
-                            this.state.userSet.startingBalance,
+                            this.props.userSet.startingBalance,
                             endBalance,
                             averageDailyExpense,
-                            this.state.userSet.balanceTracking,
+                            this.props.userSet.balanceTracking,
                             this.props.generalSettings.currency );
         break;
       case "monthBudget":
         newWidget =
-        MonthBudgetWidget( this.state.userSet.budgetExpense,
+        MonthBudgetWidget( this.props.userSet.budgetExpense,
                            totalExpense,
-                           this.handleEditBudgetFWidget,
+                           this.handleEditBudgetWidget,
                            this.props.generalSettings.currency );
         break;
       case "monthBudgetExtended":
         newWidget =
         <MonthBudgetExtendedWidget
-                  transactionList = {this.state.expenseTransactions}
+                  transactionList = {this.props.expensesData}
                   categoriesList  = {this.props.expenseCategories}
-                  budgetExtended  = {this.state.userSet.budgetExpanded}
+                  budgetExtended  = {this.props.userSet.budgetExpanded}
                   currency        = {this.props.generalSettings.currency} />;
         break;
       case "monthGraphicalStats":
         newWidget =
         <MonthGraphicalStatsWidget
-                  expenditureList   = {this.state.expenseTransactions}
-                  incomeList        = {this.state.incomeTransactions}
+                  expenditureList   = {this.props.expensesData}
+                  incomeList        = {this.props.incomeData}
                   totalExpenditure  = {totalExpense}
                   totalIncome       = {totalIncome}
                   numberOfDays      = {this.state.numDays}
-                  startingBalance   = {this.state.userSet.startingBalance}
-                  balanceTracking   = {this.state.userSet.balanceTracking}
+                  startingBalance   = {this.props.userSet.startingBalance}
+                  balanceTracking   = {this.props.userSet.balanceTracking}
                   currency          = {this.props.generalSettings.currency} />;
         break;
       case "monthPieStats":
         newWidget =
         MonthPieStatWidget( this.props.expenseCategories,
-                            this.state.expenseTransactions,
+                            this.props.expensesData,
                             totalExpense,
                             this.props.generalSettings.currency );
         break;
@@ -325,12 +269,12 @@ class Month extends React.Component {
 
   render() {
 
-    var totalExpense = (this.state.expenseTransactions.reduce(
+    var totalExpense = (this.props.expensesData.reduce(
       (counter, next) => counter + Number(next.amount), 0));
-    var totalIncome = (this.state.incomeTransactions.reduce(
+    var totalIncome = (this.props.incomeData.reduce(
       (counter, next) => counter + Number(next.amount), 0));
     var averageDailyExpense = (totalExpense / this.state.numDays);
-    var endBalance = (this.state.userSet.startingBalance - totalExpense);
+    var endBalance = (this.props.userSet.startingBalance - totalExpense);
 
     return (
       <div>
@@ -355,17 +299,17 @@ class Month extends React.Component {
           <h1>Expenses</h1>
           <MonthCatalog categories  = {this.props.expenseCategories}
                         initialData = {expensesData}
-                        realData    = {this.state.expenseTransactions}
-                        realCount   = {this.state.expenseTransactionsCount}
+                        realData    = {this.props.expensesData}
+                        realCount   = {this.props.expensesDataCount}
                         updateData  = {this.handleUpdateExpenses}
-                        isSortedBy  = {this.props.generalSettings.defaultSort} />
+                        isSortedBy  = {this.props.userSet.defaultSort} />
           <h1>Income</h1>
           <MonthCatalog categories  = {this.props.incomeCategories}
                         initialData = {incomeData}
-                        realData    = {this.state.incomeTransactions}
-                        realCount   = {this.state.incomeTransactionsCount}
+                        realData    = {this.props.incomeData}
+                        realCount   = {this.props.incomeDataCount}
                         updateData  = {this.handleUpdateIncome}
-                        isSortedBy  = {this.props.generalSettings.defaultSort} />
+                        isSortedBy  = {this.props.userSet.defaultSort} />
 
         </Modal>
 
@@ -374,7 +318,7 @@ class Month extends React.Component {
 
           <span style={closeButtonStyle} onClick={this.handleCloseSettings}>&#10006;</span>
           <MonthSettings categoriesList     = {this.props.expenseCategories}
-                         userSetData        = {this.state.userSet}
+                         userSetData        = {this.props.userSet}
                          handleSubmit       = {this.handleSettingsChange} />
 
         </Modal>

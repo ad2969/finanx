@@ -114,13 +114,13 @@ class MonthGraphicalStatsWidget extends React.Component {
         interval:       3,
       },
       data: [{ type:        "line",
-               name:        "Outflow",
-               visible:     this.state.isExpenseDisplayed,
-               dataPoints:  expenseChartData },
-             { type:        "line",
                name:        "Inflow",
                visible:     this.state.isIncomeDisplayed,
-               dataPoints:  incomeChartData }]
+               dataPoints:  incomeChartData },
+             { type:        "line",
+               name:        "Outflow",
+               visible:     this.state.isExpenseDisplayed,
+               dataPoints:  expenseChartData }]
     }
 
     if(this.props.balanceTracking) options.data.push({

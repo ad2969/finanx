@@ -15,7 +15,6 @@ class MonthSettings extends React.Component {
         startingBalance:  0,
         balanceTracking:  false,
         defaultSort:      "Id",
-        currency:         "$"
       },
       temporaryExpense: 0,
 
@@ -40,7 +39,6 @@ class MonthSettings extends React.Component {
         startingBalance:  this.props.userSetData.startingBalance,
         balanceTracking:  this.props.userSetData.balanceTracking,
         defaultSort:      this.props.userSetData.defaultSort,
-        currency:         this.props.userSetData.currency,
       },
       temporaryExpense: this.props.userSetData.budgetExpense
     });
@@ -103,13 +101,6 @@ class MonthSettings extends React.Component {
     this.setState({ data: data });
   }
 
-  handleCurrency = (event) => {
-    event.preventDefault();
-    let data = this.state.data;
-    data.currency = event.target.value;
-    this.setState({ data: data });
-  }
-
   render() {
 
     // Budget Layouts
@@ -169,14 +160,6 @@ class MonthSettings extends React.Component {
         <div>
 
           <hr/>
-          <label>Enter the currency of this account: &nbsp;&nbsp;
-            <input type         = "text"
-                   minlength    = "1"
-                   maxlength    = "4"
-                   size         = "3"
-                   defaultValue = {this.props.userSetData.currency}
-                   onChange     = {this.handleCurrency} />
-          </label>
 
           <h4>Personalize your default sorting method:</h4>
           <label>Sort Transactions By: &nbsp;<select name      = "Category"

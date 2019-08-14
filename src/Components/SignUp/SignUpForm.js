@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import { withFirebase } from '../../Firebase';
+import { dataTemplate } from '../../data/firebaseTemplate.js'
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -49,13 +50,20 @@ class SignUpFormBase extends React.Component {
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        return this.props.firebase
+        // Initialize user in database
+        this.props.firebase
           .user(authUser.user.uid)
           .set({
             username,
             email,
             roles,
-          });
+        });
+        // Initialize empty user data in database
+        this.props.firebase
+          .userData(authUser.user.uid)
+          .set({
+            months: dataTemplate
+        });
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
