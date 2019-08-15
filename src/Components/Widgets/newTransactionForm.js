@@ -35,21 +35,23 @@ class NewTransactionForm extends React.Component {
     return(
       <form id="transactionForm" onSubmit={this.handleSubmit}>
 
-        <label>Date:
+        <label class="form-input">Date:&nbsp;&nbsp;
           <input type="number" min="1" max="31" step="1" defaultValue="1" ref='date' required="required" />
         </label>
 
-        <label>Description:
+        <label class="form-input">Description:&nbsp;&nbsp;
           <input type="text" placeholder="Enter Description" ref='description' />
         </label>
 
-        <label>Amount:
+        <label class="form-input">Amount:&nbsp;&nbsp;
           <input type="number" min="0" step=".01" placeholder="Enter Amount" defaultValue="0.00" ref='amount' required="required" />
         </label>
 
-        <select name="Category" ref='category' >
-          {options}
-        </select>
+        <label class="form-input">Category:&nbsp;&nbsp;
+          <select name="Category" ref='category' >
+            {options}
+          </select>
+        </label>
 
         <input type="submit" value="Add Transaction" />
 

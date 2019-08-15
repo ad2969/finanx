@@ -48,7 +48,7 @@ class PasswordChangeFormBase extends React.Component {
 
     return (
       <div className="Login">
-      <Form onSubmit={this.onSubmit}>
+      <Form onSubmit={this.onSubmit} className="stats">
         <Form.Group controlId="passwordOne" bssize="large">
           <Form.Control
             name="passwordOne"

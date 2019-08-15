@@ -105,7 +105,7 @@ class SignUpFormBase extends React.Component {
 
     return (
       <div className="Login">
-        <form onSubmit={this.onSubmit}>
+        <form onSubmit={this.onSubmit} className="stats">
           <Form.Group controlId="username" bssize="large">
             <Form.Control
               name="username"

@@ -244,9 +244,11 @@ class MonthCatalog extends React.Component {
 
     return(
       <div>
-      <NewTransactionForm addTransaction = {this.append}
-                          categoriesList = {this.props.categories} />
-
+        <NewTransactionForm addTransaction = {this.append}
+                            categoriesList = {this.props.categories} />
+        <br />
+        <hr />
+        <br />
 
         <button onClick={() => {this.toggleSortBy( "Date" )}}>Sort By Date</button>
         <button onClick={() => {this.toggleSortBy( "Description" )}}>Sort By Description</button>

@@ -31,6 +31,11 @@
 .stats, .desc { text-align: center; }
 .stats { white-space: nowrap }
 
+.desc--notop { margin-top: 0; }
+.desc--nobottom { margin-bottom: 0; }
+.stats--notop { margin-top: 0; }
+.stats--nobottom { margin-bottom: 0; }
+
 .editContainer {
   cursor: pointer;
 
@@ -50,6 +55,17 @@
 
 /******* Specific Widget Styles *******/
 
+table {
+  @media only screen and (max-width: 600px) {
+    tr {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  label, input {
+    display: inline-block
+  }
+}
 // Transaction Table Styles
 
 .table__transactions, .table__budget {
@@ -102,4 +118,11 @@
   100% {
     transform: translateX(0);
     opacity: 1; }
+}
+
+.form-input {
+  min-width: 100px;
+  @media only screen and (max-width: 500px) {
+    display: inline-block;
+  }
 }

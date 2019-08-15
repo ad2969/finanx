@@ -2,10 +2,14 @@
 
 .react-grid-layout {
   background: #eee;
+  @media only screen and (max-width: 500px) {
+    max-width: 90%;
+  }
 }
 .react-grid-item {
   box-sizing: border-box;
   overflow: hidden;
+  max-width: 100%;
 }
 .react-grid-item:not(.react-grid-placeholder) {
   background: #ccc;

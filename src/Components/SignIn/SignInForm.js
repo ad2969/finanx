@@ -57,7 +57,7 @@ class SignInFormBase extends React.Component {
 
     return (
       <div className="Login">
-        <Form onSubmit={this.onSubmit}>
+        <Form onSubmit={this.onSubmit} className="stats">
           <Form.Group controlId="email" bssize="large">
             <Form.Control
               autoFocus
