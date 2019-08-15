@@ -36,9 +36,9 @@ class Month extends React.Component {
     rowHeight: 100
   };
 
-  constructor() {
-    super();
-    console.log("Month constructed!");
+  constructor(props) {
+    super(props);
+    console.log("Month constructed! MonthId: ", this.props.monthId);
     this.state = {
 
       // Modal Status
@@ -89,13 +89,6 @@ class Month extends React.Component {
 
   handleEditBudgetWidget = () => {
     this.handleOpenSettings();
-  }
-
-  handleUpdateExpenses = ( newTransactionList, transactionCount ) => {
-    this.props.updateExpenses( newTransactionList, transactionCount, this.props.monthId );
-  }
-  handleUpdateIncome = ( newTransactionList, transactionCount ) => {
-    this.props.updateIncome( newTransactionList, transactionCount, this.props.monthId );
   }
 
   // Settings
@@ -205,18 +198,20 @@ class Month extends React.Component {
 
           <span className="button-close" onClick={this.handleCloseCatalog}>&#10006;</span>
           <h1>Expenses</h1>
-          <MonthCatalog categories  = {this.props.expenseCategories}
+          <MonthCatalog monthId     = {this.props.monthId}
+                        categories  = {this.props.expenseCategories}
                         initialData = {expensesData}
                         realData    = {this.props.expensesData}
                         realCount   = {this.props.expensesDataCount}
-                        updateData  = {this.handleUpdateExpenses}
+                        updateData  = {this.props.updateExpenses}
                         isSortedBy  = {this.props.generalSettings.defaultSort} />
           <h1>Income</h1>
-          <MonthCatalog categories  = {this.props.incomeCategories}
+          <MonthCatalog monthId     = {this.props.monthId}
+                        categories  = {this.props.incomeCategories}
                         initialData = {incomeData}
                         realData    = {this.props.incomeData}
                         realCount   = {this.props.incomeDataCount}
-                        updateData  = {this.handleUpdateIncome}
+                        updateData  = {this.props.updateIncome}
                         isSortedBy  = {this.props.generalSettings.defaultSort} />
 
         </Modal>

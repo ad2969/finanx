@@ -61,7 +61,7 @@ class MonthCatalog extends React.Component {
     console.log("Month Catalog Unmounted! Updating tree....");
     // let unsortedTransactions = this.state.sortedTransactions.sort( (a,b) => b.id - a.id )
     // this.props.updateData(unsortedTransactions, this.state.transactionCount);
-    this.props.updateData(this.state.sortedTransactions, this.state.transactionCount);
+    this.props.updateData(this.state.sortedTransactions, this.state.transactionCount, this.props.monthId);
   }
 
   /* Database Functions */

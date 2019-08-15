@@ -29,6 +29,8 @@ class YearBase extends React.Component {
       loaded: false,
       showSettings: false,
 
+      monthShow: 1,
+
       // Default Values
       generalSettings: settingsTemplate,
       months: dataTemplate,
@@ -42,15 +44,37 @@ class YearBase extends React.Component {
   }
 
   updateSettings = (newSettings, monthId) => {
-    this.setState( prevState => ({
-      months : {
-        ...prevState.months,
-        jan: {
-          ...prevState.months.jan,
-          settings: newSettings
-        },
-      }
-    }));
+    var newState = this.state.months;
+    switch(monthId) {
+      case 0: newState.jan.settings = newSettings;
+        break;
+      case 1: newState.feb.settings = newSettings;
+        break;
+      case 2: newState.mar.settings = newSettings;
+        break;
+      case 3: newState.apr.settings = newSettings;
+        break;
+      case 4: newState.may.settings = newSettings;
+        break;
+      case 5: newState.jun.settings = newSettings;
+        break;
+      case 6: newState.jul.settings = newSettings;
+        break;
+      case 7: newState.aug.settings = newSettings;
+        break;
+      case 8: newState.sep.settings = newSettings;
+        break;
+      case 9: newState.oct.settings = newSettings;
+        break;
+      case 10: newState.nov.settings = newSettings;
+        break;
+      case 11: newState.dec.settings = newSettings;
+        break;
+      default:
+        newState.jan.settings = newSettings;
+        break;
+    }
+    this.setState({ months: newState });
   }
 
   handleOpenSettings = () => {
@@ -69,28 +93,105 @@ class YearBase extends React.Component {
   }
 
   updateExpenses = ( newTransactionList, transactionCount, monthId ) => {
-    this.setState( prevState => ({
-      months : {
-        ...prevState.months,
-        jan : {
-          ...prevState.months.jan,
-          expenses: newTransactionList,
-          expensesCount: transactionCount
-        }
-      }
-    }), () => { console.log("** Expenses updated!, new list:", this.state.months.jan.expenses) });
+    var newState = this.state.months;
+    switch(monthId) {
+      case 0: newState.jan.expenses = newTransactionList;
+              newState.jan.expensesCount = transactionCount;
+        break;
+      case 1: newState.feb.expenses = newTransactionList;
+              newState.feb.expensesCount = transactionCount;
+        break;
+      case 2: newState.mar.expenses = newTransactionList;
+              newState.mar.expensesCount = transactionCount;
+        break;
+      case 3: newState.apr.expenses = newTransactionList;
+              newState.apr.expensesCount = transactionCount;
+        break;
+      case 4: newState.may.expenses = newTransactionList;
+              newState.may.expensesCount = transactionCount;
+        break;
+      case 5: newState.jun.expenses = newTransactionList;
+              newState.jun.expensesCount = transactionCount;
+        break;
+      case 6: newState.jul.expenses = newTransactionList;
+              newState.jul.expensesCount = transactionCount;
+        break;
+      case 7: newState.aug.expenses = newTransactionList;
+              newState.aug.expensesCount = transactionCount;
+        break;
+      case 8: newState.sep.expenses = newTransactionList;
+              newState.sep.expensesCount = transactionCount;
+        break;
+      case 9: newState.oct.expenses = newTransactionList;
+              newState.oct.expensesCount = transactionCount;
+        break;
+      case 10: newState.nov.expenses = newTransactionList;
+               newState.nov.expensesCount = transactionCount;
+        break;
+      case 11: newState.dec.expenses = newTransactionList;
+               newState.dec.expensesCount = transactionCount;
+        break;
+      default: newState.jan.expenses = newTransactionList;
+               newState.jan.expensesCount = transactionCount;
+        break;
+    }
+    this.setState({
+      month: newState
+    }, () => { console.log("** Expenses updated!, new list:", this.state.months) });
   }
+
   updateIncome = ( newTransactionList, transactionCount, monthId ) => {
-    this.setState( prevState => ({
-      months: {
-        ...prevState.months,
-        jan: {
-          ...prevState.months.jan,
-          income: newTransactionList,
-          incomeCount: transactionCount
-        }
-      }
-    }), () => { console.log("** Income updated!, new list:", this.state.months.jan.income) });
+    var newState = this.state.months;
+    switch(monthId) {
+      case 0: newState.jan.income = newTransactionList;
+              newState.jan.incomeCount = transactionCount;
+        break;
+      case 1: newState.feb.income = newTransactionList;
+              newState.feb.incomeCount = transactionCount;
+        break;
+      case 2: newState.mar.income = newTransactionList;
+              newState.mar.incomeCount = transactionCount;
+        break;
+      case 3: newState.apr.income = newTransactionList;
+              newState.apr.incomeCount = transactionCount;
+        break;
+      case 4: newState.may.income = newTransactionList;
+              newState.may.incomeCount = transactionCount;
+        break;
+      case 5: newState.jun.income = newTransactionList;
+              newState.jun.incomeCount = transactionCount;
+        break;
+      case 6: newState.jul.income = newTransactionList;
+              newState.jul.incomeCount = transactionCount;
+        break;
+      case 7: newState.aug.income = newTransactionList;
+              newState.aug.incomeCount = transactionCount;
+        break;
+      case 8: newState.sep.income = newTransactionList;
+              newState.sep.incomeCount = transactionCount;
+        break;
+      case 9: newState.oct.income = newTransactionList;
+              newState.oct.incomeCount = transactionCount;
+        break;
+      case 10: newState.nov.income = newTransactionList;
+               newState.nov.incomeCount = transactionCount;
+        break;
+      case 11: newState.dec.income = newTransactionList;
+               newState.dec.incomeCount = transactionCount;
+        break;
+      default: newState.jan.income = newTransactionList;
+               newState.jan.incomeCount = transactionCount;
+        break;
+    }
+    this.setState({
+      month: newState
+    }, () => { console.log("** Income updated!, new list:", this.state.months) });
+  }
+
+  handleMonthShow = (event) => {
+    event.preventDefault();
+    console.log("** Changed to: ", parseInt(event.target.value))
+    this.setState({ monthShow: parseInt(event.target.value) });
   }
 
   // GRID STUFF
@@ -236,19 +337,61 @@ class YearBase extends React.Component {
   }
 
   render() {
+    var prefix;
+    switch(this.state.monthShow) {
+      case 0: prefix = this.state.months.jan;
+      break;
+      case 1: prefix = this.state.months.feb;
+      break;
+      case 2: prefix = this.state.months.mar;
+      break;
+      case 3: prefix = this.state.months.apr;
+      break;
+      case 4: prefix = this.state.months.may;
+      break;
+      case 5: prefix = this.state.months.jun;
+      break;
+      case 6: prefix = this.state.months.jul;
+      break;
+      case 7: prefix = this.state.months.aug;
+      break;
+      case 8: prefix = this.state.months.sep;
+      break;
+      case 9: prefix = this.state.months.oct;
+      break;
+      case 10: prefix = this.state.months.nov;
+      break;
+      case 11: prefix = this.state.months.dec;
+      break;
+      default: prefix = this.state.months.jan;
+      break;
+    }
+
+    var monthOptions = [];
+    var monthList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December"];
+    for( let i = 0; i < monthList.length; i++ ) {
+      monthOptions.push(
+        <option key={"month-option-"+i} value={monthList[i]}>
+          {monthNames[i]}
+        </option>
+      );
+    }
+
     return(
       <div className="container">
-        <Month monthId            = "0"
+        <Month monthId            = {this.state.monthShow}
                expenseCategories  = {expenseCategories}
                incomeCategories   = {incomeCategories}
                generalSettings    = {this.state.generalSettings}
 
                widgetData         = {this.state.widgets}
-               userSet            = {this.state.months.jan.settings}
-               incomeData         = {this.state.months.jan.income}
-               incomeDataCount    = {this.state.months.jan.incomeCount}
-               expensesData       = {this.state.months.jan.expenses}
-               expensesDataCount  = {this.state.months.jan.expensesCount}
+               userSet            = {prefix.settings}
+               incomeData         = {prefix.income}
+               incomeDataCount    = {prefix.incomeCount}
+               expensesData       = {prefix.expenses}
+               expensesDataCount  = {prefix.expensesCount}
 
                updateSettings     = {this.updateSettings}
                updateExpenses     = {this.updateExpenses}
@@ -272,6 +415,15 @@ class YearBase extends React.Component {
         <div>
           <button onClick={this.handleOpenSettings}>Account Settings</button>
         </div>
+
+        <hr />
+
+        <label>Sort Transactions By: &nbsp;<select
+                name      = "Currency"
+                defaultValue     = {this.state.monthShow}
+                onChange  = {this.handleMonthShow}>
+          {monthOptions}
+        </select></label>
 
       </div>
     )
