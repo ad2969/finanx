@@ -381,6 +381,8 @@ class YearBase extends React.Component {
 
     return(
       <div className="container">
+      <h1 className="stats">Dashboard ({monthNames[this.state.monthShow]})</h1>
+      <hr />
         <Month monthId            = {this.state.monthShow}
                expenseCategories  = {expenseCategories}
                incomeCategories   = {incomeCategories}

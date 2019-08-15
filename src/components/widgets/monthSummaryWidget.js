@@ -28,7 +28,7 @@ function MonthSummaryWidget( totalExpense,
     var options = {
       exportEnabled:    false,
       animationEnabled: true,
-      height:           200,
+      height:           160,
       backgroundColor:  "#ccc",
       axisY: { maximum: Math.max(Number(startBalance), Number(endBalance)) },
       data: [{

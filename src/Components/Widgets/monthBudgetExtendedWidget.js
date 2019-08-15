@@ -15,7 +15,7 @@ class MonthBudgetExtendedWidget extends React.Component {
     this.props.transactionList.forEach( element => {
       for(let i = 0; i < this.props.categoriesList.length; i++)
       {
-        if(element.category === this.props.categoriesList[i]) expenseList[i] += element.amount
+        if(element.category === this.props.categoriesList[i]) expenseList[i] += Number(element.amount)
       }
     });
 

@@ -7,7 +7,6 @@ import Year from '../application/year';
 const HomePage = () => {
   return(
     <div>
-      <h1 className="stats">Dashboard</h1>
       <Year />
     </div>
   )
