@@ -3,7 +3,10 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import { withFirebase } from '../../Firebase';
-import { dataTemplate } from '../../data/firebaseTemplate.js'
+import { dataTemplate,
+         settingsTemplate,
+         widgetTemplate,
+         WIDGET_COUNT } from '../../data/firebaseTemplate.js'
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -62,7 +65,12 @@ class SignUpFormBase extends React.Component {
         this.props.firebase
           .userData(authUser.user.uid)
           .set({
-            months: dataTemplate
+            months: dataTemplate,
+            generalSettings: settingsTemplate,
+            widgets: {
+              widgets: widgetTemplate,
+              counter: WIDGET_COUNT
+            }
         });
       })
       .then(() => {

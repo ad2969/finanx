@@ -9,7 +9,6 @@ import MonthBudgetExtendedWidget from '../widgets/monthBudgetExtendedWidget';
 import MonthPieStatWidget from '../widgets/monthPieStatWidget'
 import MonthGraphicalStatsWidget from '../widgets/monthGraphicalStatsWidget'
 import MonthSummaryWidget from '../widgets/monthSummaryWidget'
-import widgetList from '../../lists/defaultWidgetList';
 
 // Import sample data
 import expensesData from '../../data/monthExpensesExample.json';
@@ -46,17 +45,6 @@ class Month extends React.Component {
       showCatalog:    false,
       showSettings:   false,
 
-      // Widget Info
-      items: [0, 1, 2, 3, 4, 5, 6].map((i, key, list) => {
-        return {
-          i: i.toString(),
-          x: widgetList[i].x, y: widgetList[i].y,
-          w: widgetList[i].w, h: widgetList[i].h,
-          widget: widgetList[i].widget };
-      }),
-      layout: [],
-      widgetCounter: 7,
-
       // Miscellaneous Info
       numDays: 30
 
@@ -68,16 +56,17 @@ class Month extends React.Component {
     this.handleCloseSettings     = this.handleCloseSettings.bind(this);
 
     this.handleEditBudgetWidget = this.handleEditBudgetWidget.bind(this);
-
-    this.addWidget               = this.addWidget.bind(this);
-    this.onBreakpointChange      = this.onBreakpointChange.bind(this);
-    this.onRemoveItem            = this.onRemoveItem.bind(this);
   }
 
   /* Lifecycle Functions */
 
   componentDidMount() {
     console.log("Month Mounted!");
+    this.setState({
+      items: this.props.widgetData.widgets,
+      layout: this.props.widgetData.layout,
+      widgetCounter: this.props.widgetData.counter,
+    })
   }
 
   /* Main handlers */
@@ -125,10 +114,10 @@ class Month extends React.Component {
                    averageDailyExpense,
                    endBalance ) => {
     let newWidget;
-    switch( element.widget ) {
-      case "accountSummary":
+    switch( element.i ) {
+      case "0":
         break;
-      case "monthSummary":
+      case "1":
         newWidget =
         MonthSummaryWidget( totalExpense,
                             totalIncome,
@@ -138,14 +127,14 @@ class Month extends React.Component {
                             this.props.userSet.balanceTracking,
                             this.props.generalSettings.currency );
         break;
-      case "monthBudget":
+      case "2":
         newWidget =
         MonthBudgetWidget( this.props.userSet.budgetExpense,
                            totalExpense,
                            this.handleEditBudgetWidget,
                            this.props.generalSettings.currency );
         break;
-      case "monthBudgetExtended":
+      case "3":
         newWidget =
         <MonthBudgetExtendedWidget
                   transactionList = {this.props.expensesData}
@@ -153,7 +142,7 @@ class Month extends React.Component {
                   budgetExtended  = {this.props.userSet.budgetExpanded}
                   currency        = {this.props.generalSettings.currency} />;
         break;
-      case "monthGraphicalStats":
+      case "4":
         newWidget =
         <MonthGraphicalStatsWidget
                   expenditureList   = {this.props.expensesData}
@@ -165,91 +154,26 @@ class Month extends React.Component {
                   balanceTracking   = {this.props.userSet.balanceTracking}
                   currency          = {this.props.generalSettings.currency} />;
         break;
-      case "monthPieStats":
+      case "5":
         newWidget =
         MonthPieStatWidget( this.props.expenseCategories,
                             this.props.expensesData,
                             totalExpense,
                             this.props.generalSettings.currency );
         break;
-      case "livingCostComparison":
+      case "6":
         break;
       default: break;
     }
     return (
       <div key={element.i} data-grid={element}>
         {newWidget}
-        <span className="remove"
-              onClick={this.onRemoveItem.bind(this, element.i)}
+        <span className="remove" data-key={element.i}
+              onClick={this.props.onRemoveItem}
         >x</span>
       </div>
     )
   }
-
-  addWidget = ( widget ) => {
-    console.log("** adding widget:", this.state.widgetCounter, ":", widget );
-
-    let newWidget = {
-      i: this.state.widgetCounter.toString(),
-      //x: (this.state.items.length * 2) % (this.state.cols || 12),
-      x: Infinity, y: Infinity, // puts it at the very bottom
-      widget: widget,
-    };
-    switch( widget ) {
-      case "accountSummary":
-        newWidget.w = widgetList[0].w;
-        newWidget.h = widgetList[0].h;
-        break;
-      case "monthSummary":
-        newWidget.w = widgetList[1].w;
-        newWidget.h = widgetList[1].h;
-        break;
-      case "monthBudget":
-        newWidget.w = widgetList[2].w;
-        newWidget.h = widgetList[2].h;
-        break;
-      case "monthBudgetExtended":
-        newWidget.w = widgetList[3].w;
-        newWidget.h = widgetList[3].h;
-        break;
-      case "monthGraphicalStats":
-        newWidget.w = widgetList[4].w;
-        newWidget.h = widgetList[4].h;
-        break;
-      case "monthPieStats":
-        newWidget.w = widgetList[5].w;
-        newWidget.h = widgetList[5].h;
-        break;
-      case "livingCostComparison":
-        newWidget.w = widgetList[6].w;
-        newWidget.h = widgetList[6].h;
-        break;
-      default: break;
-    }
-    this.setState( prevState => ({
-      items: prevState.items.concat(newWidget),
-      widgetCounter: prevState.widgetCounter + 1
-    }));
-  }
-
-  onBreakpointChange = (breakpoint, cols) => {
-    this.setState({
-      breakpoint: breakpoint,
-      cols: cols
-    });
-  }
-
-  onLayoutChange = (layout) => {
-    this.setState({ layout: layout });
-  }
-
-  onRemoveItem = (i) => {
-    console.log("** removing widget:", i);
-    this.setState( prevState => ({
-      items: _.reject(prevState.items, { i: i })
-    }));
-  }
-
 
   render() {
 
@@ -263,9 +187,9 @@ class Month extends React.Component {
     return (
       <div>
         <ResponsiveReactGridLayout
-            onLayoutChange      = {this.onLayoutChange}
-            onBreakpointChange  = {this.onBreakpointChange} >
-            {_.map(this.state.items, element =>
+            onLayoutChange      = {this.props.onLayoutChange}
+            onBreakpointChange  = {this.props.onBreakpointChange} >
+            {_.map(this.props.widgetData.widgets, element =>
               this.createWidget( element,
                                  totalExpense,
                                  totalIncome,
@@ -312,11 +236,11 @@ class Month extends React.Component {
         </div>
 
         <div> Add widgets here: (Dropdown menu)
-          <button onClick={() => {this.addWidget("monthSummary")}}>Month Summary</button>
-          <button onClick={() => {this.addWidget("monthBudget")}}>Budget Widget</button>
-          <button onClick={() => {this.addWidget("monthBudgetExtended")}}>Extended Budget Widget</button>
-          <button onClick={() => {this.addWidget("monthGraphicalStats")}}>Asset Flow Widget</button>
-          <button onClick={() => {this.addWidget("monthPieStats")}}>Expenditure Chart Widget</button>
+          <button onClick={() => {this.props.addWidget("monthSummary")}}>Month Summary</button>
+          <button onClick={() => {this.props.addWidget("monthBudget")}}>Budget Widget</button>
+          <button onClick={() => {this.props.addWidget("monthBudgetExtended")}}>Extended Budget Widget</button>
+          <button onClick={() => {this.props.addWidget("monthGraphicalStats")}}>Asset Flow Widget</button>
+          <button onClick={() => {this.props.addWidget("monthPieStats")}}>Expenditure Chart Widget</button>
         </div>
 
       </div>

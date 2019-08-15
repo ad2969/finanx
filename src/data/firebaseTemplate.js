@@ -1,5 +1,24 @@
 import expenseCategories, { MAX_EXPENSE_CATEGORIES } from '../lists/expenseCategories';
 import incomeCategories from '../lists/incomeCategories';
+import widgetList from '../lists/defaultWidgetList';
+
+const widgetTemplate = [0, 1, 2, 3, 4, 5, 6].map((i, key, list) => {
+  return {
+    i: i.toString(), widget: widgetList[i].widget,
+    x: widgetList[i].x, y: widgetList[i].y,
+    w: widgetList[i].w, h: widgetList[i].h,
+    minW: widgetList[i].minW, minH: widgetList[i].minH,
+    maxW: widgetList[i].maxW, maxH: widgetList[i].maxH,
+    isDraggable: true, isResizable: true, moved: false, static: false };
+})
+
+export const WIDGET_COUNT = 7
+
+const settingsTemplate = {
+  currencyCode: "CAD",
+  currency:     "$",
+  defaultSort:  "Id"
+}
 
 const dataTemplate =
 {
@@ -353,4 +372,4 @@ const dataTemplate =
   },
 }
 
-export { dataTemplate };
+export { dataTemplate, settingsTemplate, widgetTemplate };
