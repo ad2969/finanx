@@ -198,7 +198,8 @@ class Month extends React.Component {
 
           <span className="button-close" onClick={this.handleCloseCatalog}>&#10006;</span>
           <h1>Expenses</h1>
-          <MonthCatalog monthId     = {this.props.monthId}
+          <MonthCatalog type        = "expenses"
+                        monthId     = {this.props.monthId}
                         categories  = {this.props.expenseCategories}
                         initialData = {expensesData}
                         realData    = {this.props.expensesData}
@@ -206,7 +207,8 @@ class Month extends React.Component {
                         updateData  = {this.props.updateExpenses}
                         isSortedBy  = {this.props.generalSettings.defaultSort} />
           <h1>Income</h1>
-          <MonthCatalog monthId     = {this.props.monthId}
+          <MonthCatalog type        = "income"
+                        monthId     = {this.props.monthId}
                         categories  = {this.props.incomeCategories}
                         initialData = {incomeData}
                         realData    = {this.props.incomeData}

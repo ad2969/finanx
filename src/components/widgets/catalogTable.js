@@ -15,7 +15,8 @@ function CatalogTable( transactionObjects,
                        handleDate,
                        handleDescription,
                        handleAmount,
-                       handleCategory )
+                       handleCategory,
+                       toggleSortBy )
 {
 
   var rows = [];
@@ -47,13 +48,24 @@ function CatalogTable( transactionObjects,
   return(
     <table className="table__transactions">
       <tbody>
-
         <tr>
-          <th>Date</th>
-          <th>Description</th>
-          <th>Amount</th>
-          <th>Category</th>
-          <th></th>
+          <th>
+            Date
+            <button onClick={() => {toggleSortBy( "Date" )}}>Sort By Date</button>
+          </th>
+          <th>
+            Description
+            <button onClick={() => {toggleSortBy( "Description" )}}>Sort By Description</button>
+          </th>
+          <th>
+            Amount
+            <button onClick={() => {toggleSortBy( "Amount" )}}>Sort By Amount</button>
+          </th>
+          <th>
+            Category
+            <button onClick={() => {toggleSortBy( "Category" )}}>Sort By Category</button>
+          </th>
+          <th><button onClick={() => {toggleSortBy( "Id" )}}>Sort By Recent</button></th>
         </tr>
 
         {rows}

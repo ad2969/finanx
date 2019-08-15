@@ -14,7 +14,8 @@ class NewTransactionForm extends React.Component {
       date:         this.refs.date.value,
       description:  this.refs.description.value,
       amount:       this.refs.amount.value,
-      category:     this.refs.category.value
+      category:     this.refs.category.value,
+      id:           this.props.transactionCount
     }
 
     this.props.addTransaction( data );
@@ -35,19 +36,19 @@ class NewTransactionForm extends React.Component {
     return(
       <form id="transactionForm" onSubmit={this.handleSubmit}>
 
-        <label class="form-input">Date:&nbsp;&nbsp;
+        <label className="form-input">Date:&nbsp;&nbsp;
           <input type="number" min="1" max="31" step="1" defaultValue="1" ref='date' required="required" />
         </label>
 
-        <label class="form-input">Description:&nbsp;&nbsp;
+        <label className="form-input">Description:&nbsp;&nbsp;
           <input type="text" placeholder="Enter Description" ref='description' />
         </label>
 
-        <label class="form-input">Amount:&nbsp;&nbsp;
+        <label className="form-input">Amount:&nbsp;&nbsp;
           <input type="number" min="0" step=".01" placeholder="Enter Amount" defaultValue="0.00" ref='amount' required="required" />
         </label>
 
-        <label class="form-input">Category:&nbsp;&nbsp;
+        <label className="form-input">Category:&nbsp;&nbsp;
           <select name="Category" ref='category' >
             {options}
           </select>

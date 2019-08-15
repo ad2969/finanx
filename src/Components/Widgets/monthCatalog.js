@@ -50,7 +50,7 @@ class MonthCatalog extends React.Component {
     console.log("Month Catalog Mounted!");
     this.setState({
       sortedTransactions: this.props.realData,
-      transactionCount: this.props.realCount,
+      transactionCount: this.props.realCount + 1,
       isSortedBy: this.props.isSortedBy,
     }, () => { this.sortData(this.props.isSortedBy) });
 
@@ -131,8 +131,8 @@ class MonthCatalog extends React.Component {
   sortData = (argument) => {
     // console.log("** sortData called!");
     console.log("   # Sort is reversed = ", this.state.isReverseSort);
-    let transactionList = this.state.sortedTransactions;
-    let sortedTransactions;
+    var transactionList = this.state.sortedTransactions;
+    var sortedTransactions;
     switch( argument ) {
       case "Date":
         sortedTransactions = this.state.isReverseSort ?
@@ -160,6 +160,7 @@ class MonthCatalog extends React.Component {
                              transactionList.sort( (a,b) => b.id - a.id );
         break;
     }
+    console.log("sorted", sortedTransactions);
     this.setState({
       sortedTransactions: sortedTransactions },
       () => { console.log("** Sorted By", this.state.isSortedBy, ", Sorted Array: ", sortedTransactions) }
@@ -245,16 +246,13 @@ class MonthCatalog extends React.Component {
     return(
       <div>
         <NewTransactionForm addTransaction = {this.append}
-                            categoriesList = {this.props.categories} />
+                            categoriesList = {this.props.categories}
+                            transactionCount = {this.state.transactionCount}/>
         <br />
         <hr />
         <br />
 
-        <button onClick={() => {this.toggleSortBy( "Date" )}}>Sort By Date</button>
-        <button onClick={() => {this.toggleSortBy( "Description" )}}>Sort By Description</button>
-        <button onClick={() => {this.toggleSortBy( "Amount" )}}>Sort By Amount</button>
-        <button onClick={() => {this.toggleSortBy( "Category" )}}>Sort By Category</button>
-        <button onClick={() => {this.toggleSortBy( "Id" )}}>Sort By Recent</button>
+
 
         {CatalogTable( this.state.sortedTransactions,
                        this.state.transactionCount,
@@ -270,7 +268,8 @@ class MonthCatalog extends React.Component {
                        this.handleDate,
                        this.handleDescription,
                        this.handleAmount,
-                       this.handleCategory )}
+                       this.handleCategory,
+                       this.toggleSortBy )}
 
       <button onClick={this.loadJSON}>LOAD LOCAL JSON DATA</button>
       </div>
