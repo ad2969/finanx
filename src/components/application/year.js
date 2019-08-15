@@ -29,7 +29,7 @@ class YearBase extends React.Component {
       loaded: false,
       showSettings: false,
 
-      monthShow: 1,
+      monthShow: 0,
 
       // Default Values
       generalSettings: settingsTemplate,
@@ -379,8 +379,10 @@ class YearBase extends React.Component {
       );
     }
 
+    const visibility = this.state.loaded ? {visibility: "visible"} : {visibility: "hidden"}
+
     return(
-      <div className="container">
+      <div className="container" style={visibility}>
       <h1 className="stats">Dashboard ({monthNames[this.state.monthShow]})</h1>
       <hr />
         <Month monthId            = {this.state.monthShow}

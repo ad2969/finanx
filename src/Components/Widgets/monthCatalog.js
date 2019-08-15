@@ -67,7 +67,9 @@ class MonthCatalog extends React.Component {
   /* Database Functions */
 
   loadJSON = () => {
-    let data = [];
+    var confirmation = window.confirm("Are you sure you want to load a template JSON File?");
+    if(!confirmation) return;
+    let data = this.props.realData;
     for( let i = 0; i < this.props.initialData.length; i++ ) {
       data.push( this.props.initialData[i] )
     }
@@ -245,7 +247,6 @@ class MonthCatalog extends React.Component {
       <NewTransactionForm addTransaction = {this.append}
                           categoriesList = {this.props.categories} />
 
-        <button onClick={this.loadJSON}>LOAD LOCAL JSON DATA</button>
 
         <button onClick={() => {this.toggleSortBy( "Date" )}}>Sort By Date</button>
         <button onClick={() => {this.toggleSortBy( "Description" )}}>Sort By Description</button>
@@ -269,6 +270,7 @@ class MonthCatalog extends React.Component {
                        this.handleAmount,
                        this.handleCategory )}
 
+      <button onClick={this.loadJSON}>LOAD LOCAL JSON DATA</button>
       </div>
     )
   }

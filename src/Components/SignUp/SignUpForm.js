@@ -129,7 +129,7 @@ class SignUpFormBase extends React.Component {
               name="passwordOne"
               value={passwordOne}
               onChange={this.onChange}
-              type="text"
+              type="password"
               placeholder="Password"
             />
           </Form.Group>
@@ -138,7 +138,7 @@ class SignUpFormBase extends React.Component {
               name="passwordTwo"
               value={passwordTwo}
               onChange={this.onChange}
-              type="text"
+              type="password"
               placeholder="Confirm Password"
             />
           </Form.Group>
