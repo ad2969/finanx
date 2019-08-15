@@ -7,3 +7,17 @@ table {
     padding: 15px;
   }
 }
+
+.remove {
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 0;
+}
+
+.button-close {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}

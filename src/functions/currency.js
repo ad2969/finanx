@@ -1,9 +1,21 @@
 
 function currencyConvert( countryCode ) {
-  if( countryCode === "CAD" | "USD" ) {
-    return "$";
+  var returnString;
+  switch(countryCode) {
+    case "CAD":
+      returnString = "$";
+      break;
+    case "USD":
+      returnString = "$";
+      break;
+    case "IDR":
+      returnString = "Rp. ";
+      break;
+    default:
+      returnString = "$";
+      break;
   }
-  else return "$";
+  return returnString;
 }
 
 export default currencyConvert

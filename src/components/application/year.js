@@ -1,23 +1,28 @@
 import React from 'react';
+import Modal from 'react-modal';
 import { compose } from 'recompose';
 
 import { withFirebase } from '../../Firebase'
 import { withAuthorization } from '../../Session'
 
 import Month from './month';
+import AccountSettings from '../user/accountSettings';
+
 import expenseCategories from '../../lists/expenseCategories';
 import incomeCategories from '../../lists/incomeCategories';
+import { dataTemplate } from '../../data/firebaseTemplate'
 
-import { dataTemplate } from '../../data/firebaseTemplate.js'
 
-// Function Imports
-// import currencyConvert from '../../functions/currency.js';
+// Modal App Element needs to be set to ensure main app is hidden behind modal
+Modal.setAppElement(document.getElementById('root'));
 
 class YearBase extends React.Component {
   constructor() {
     super();
     console.log("Year constructed!");
     this.state = {
+
+      showSettings: false,
 
       // Custom Settings
       generalSettings: {
@@ -41,6 +46,21 @@ class YearBase extends React.Component {
         },
       }
     }));
+  }
+
+  handleOpenSettings = () => {
+    this.setState({ showSettings: true });
+  }
+
+  handleCloseSettings = () => {
+    this.setState({ showSettings: false });
+  }
+
+  updateGeneralSettings = (newSettings) => {
+    this.setState( prevState => ({
+      generalSettings: newSettings
+    }));
+    this.handleCloseSettings();
   }
 
   updateExpenses = ( newTransactionList, transactionCount, monthId ) => {
@@ -76,8 +96,10 @@ class YearBase extends React.Component {
       const obj = snapshot.val();
       const objchild = obj[Object.keys(obj)[0]];
       const months = objchild.months;
+      const generalSettings = objchild.generalSettings;
       this.setState({
-        months
+        months,
+        generalSettings
       }, () => { console.log("** Transactions Imported!", this.state.months) })
 
     })
@@ -110,6 +132,20 @@ class YearBase extends React.Component {
                updateExpenses     = {this.updateExpenses}
                updateIncome       = {this.updateIncome}
         />
+
+        <Modal isOpen         = {this.state.showSettings}
+               onRequestClose = {this.handleCloseSettings} >
+
+          <span className="button-close" onClick={this.handleCloseSettings}>&#10006;</span>
+          <AccountSettings generalSettings  = {this.state.generalSettings}
+                           handleSubmit     = {this.updateGeneralSettings} />
+
+        </Modal>
+
+        <div>
+          <button onClick={this.handleOpenSettings}>Account Settings</button>
+        </div>
+
       </div>
     )
   }

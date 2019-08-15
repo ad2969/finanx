@@ -26,21 +26,6 @@ import '../../styles/month-grid-styles.scss'
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-
-// Style preset for exit buttons
-const closeButtonStyle = {
-  position: "absolute",
-  right: "10px",
-  top: "10px",
-  cursor: "pointer"
-};
-const removeStyle = {
-  position: "absolute",
-  right: "5px",
-  top: 0,
-  cursor: "pointer"
-};
-
 // Modal App Element needs to be set to ensure main app is hidden behind modal
 Modal.setAppElement(document.getElementById('root'));
 
@@ -195,7 +180,6 @@ class Month extends React.Component {
       <div key={element.i} data-grid={element}>
         {newWidget}
         <span className="remove"
-              style={removeStyle}
               onClick={this.onRemoveItem.bind(this, element.i)}
         >x</span>
       </div>
@@ -295,7 +279,7 @@ class Month extends React.Component {
         <Modal isOpen         = {this.state.showCatalog}
                onRequestClose = {this.handleCloseCatalog} >
 
-          <span style={closeButtonStyle} onClick={this.handleCloseCatalog}>&#10006;</span>
+          <span className="button-close" onClick={this.handleCloseCatalog}>&#10006;</span>
           <h1>Expenses</h1>
           <MonthCatalog categories  = {this.props.expenseCategories}
                         initialData = {expensesData}
@@ -316,7 +300,7 @@ class Month extends React.Component {
         <Modal isOpen         = {this.state.showSettings}
                onRequestClose = {this.handleCloseSettings} >
 
-          <span style={closeButtonStyle} onClick={this.handleCloseSettings}>&#10006;</span>
+          <span className="button-close" onClick={this.handleCloseSettings}>&#10006;</span>
           <MonthSettings categoriesList     = {this.props.expenseCategories}
                          userSetData        = {this.props.userSet}
                          handleSubmit       = {this.handleSettingsChange} />

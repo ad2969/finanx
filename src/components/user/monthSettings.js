@@ -116,19 +116,7 @@ class MonthSettings extends React.Component {
         <div>
           <p><button type="button" onClick={this.toggleExpandBudget}>Expand Budget!</button></p>
         </div>;
-
-    // Default Sort Layouts
-
-    var sortOptions = [];
-    var columnList = ["Date", "Description", "Amount", "Category", "Id"]
-    for( let i = 0; i < columnList.length; i++ ) {
-      sortOptions.push(
-        <option key={"sort-option-"+i} value={columnList[i] === "Id" ? "Recent" : columnList[i]}>
-          {columnList[i] === "Id" ? "Recent" : columnList[i]}
-        </option>
-      );
-    }
-
+        
     return(
       <form onSubmit={() => this.props.handleSubmit(this.state.data)}>
 
