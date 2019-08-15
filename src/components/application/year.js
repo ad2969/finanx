@@ -23,6 +23,7 @@ class YearBase extends React.Component {
       generalSettings: {
         currencyCode: "CAD",
         currency: "$",
+        defaultSort: "Id"
       },
 
       // Data
@@ -86,7 +87,8 @@ class YearBase extends React.Component {
     this.props.firebase.userDat().off();
     this.props.firebase.userData(this.props.firebase.auth.currentUser.uid)
       .set({
-        months: this.state.months
+        months: this.state.months,
+        generalSettings: this.state.generalSettings
     })
   }
 

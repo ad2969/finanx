@@ -302,14 +302,14 @@ class Month extends React.Component {
                         realData    = {this.props.expensesData}
                         realCount   = {this.props.expensesDataCount}
                         updateData  = {this.handleUpdateExpenses}
-                        isSortedBy  = {this.props.userSet.defaultSort} />
+                        isSortedBy  = {this.props.generalSettings.defaultSort} />
           <h1>Income</h1>
           <MonthCatalog categories  = {this.props.incomeCategories}
                         initialData = {incomeData}
                         realData    = {this.props.incomeData}
                         realCount   = {this.props.incomeDataCount}
                         updateData  = {this.handleUpdateIncome}
-                        isSortedBy  = {this.props.userSet.defaultSort} />
+                        isSortedBy  = {this.props.generalSettings.defaultSort} />
 
         </Modal>
 

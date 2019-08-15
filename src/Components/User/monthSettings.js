@@ -14,7 +14,6 @@ class MonthSettings extends React.Component {
         isBudgetExpanded: false,
         startingBalance:  0,
         balanceTracking:  false,
-        defaultSort:      "Id",
       },
       temporaryExpense: 0,
 
@@ -22,7 +21,6 @@ class MonthSettings extends React.Component {
 
     this.handleBudget             = this.handleBudget.bind(this);
     this.toggleExpandBudget       = this.toggleExpandBudget.bind(this);
-    this.handleDefaultSort        = this.handleDefaultSort.bind(this);
     this.handleAccountActivation  = this.handleAccountActivation.bind(this);
     this.handleStartingBalance    = this.handleStartingBalance.bind(this);
   }
@@ -38,7 +36,6 @@ class MonthSettings extends React.Component {
         isBudgetExpanded: this.props.userSetData.isBudgetExpanded,
         startingBalance:  this.props.userSetData.startingBalance,
         balanceTracking:  this.props.userSetData.balanceTracking,
-        defaultSort:      this.props.userSetData.defaultSort,
       },
       temporaryExpense: this.props.userSetData.budgetExpense
     });
@@ -76,13 +73,6 @@ class MonthSettings extends React.Component {
         isBudgetExpanded: !prevState.data.isBudgetExpanded
       }
     }));
-  }
-
-  handleDefaultSort = (event) => {
-    event.preventDefault();
-    let data = this.state.data;
-    data.defaultSort = event.target.value;
-    this.setState({ data: data });
   }
 
   handleAccountActivation = () => {
@@ -154,21 +144,6 @@ class MonthSettings extends React.Component {
                  disabled     = {this.state.data.isBudgetExpanded} />
         </label>
         {expandedBudget}
-
-        <h2>Display & Personalization</h2>
-
-        <div>
-
-          <hr/>
-
-          <h4>Personalize your default sorting method:</h4>
-          <label>Sort Transactions By: &nbsp;<select name      = "Category"
-                  value     = { this.state.data.defaultSort === "Id" ?
-                                "Recent" : this.state.data.defaultSort }
-                  onChange  = {this.handleDefaultSort}>
-            {sortOptions}
-          </select></label>
-        </div>
 
         <h2>Account</h2>
 

@@ -30,7 +30,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   feb: {
@@ -60,7 +59,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   mar: {
@@ -90,7 +88,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   apr: {
@@ -120,7 +117,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   may: {
@@ -150,7 +146,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   jun: {
@@ -180,7 +175,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   jul: {
@@ -210,7 +204,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   aug: {
@@ -240,7 +233,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   sep: {
@@ -270,7 +262,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   oct: {
@@ -300,7 +291,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   nov: {
@@ -330,7 +320,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
   dec: {
@@ -360,7 +349,6 @@ const dataTemplate =
       isBudgetExpanded: false,
       startingBalance:  0,
       balanceTracking:  false,
-      defaultSort:      "Id",
     }
   },
 }
