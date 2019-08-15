@@ -5,6 +5,8 @@ import { withFirebase } from '../../Firebase'
 import { withAuthorization } from '../../Session'
 
 import Month from './month';
+import expenseCategories from '../../lists/expenseCategories';
+import incomeCategories from '../../lists/incomeCategories';
 
 import { dataTemplate } from '../../data/firebaseTemplate.js'
 
@@ -22,22 +24,6 @@ class YearBase extends React.Component {
         currencyCode: "CAD",
         currency: "$",
       },
-
-      expenseCategories: [
-        "Food and Groceries",
-        "Entertainment",
-        "Education",
-        "Insurance and Bills",
-        "Rent",
-        "Other",
-      ],
-      incomeCategories: [
-        "Salary",
-        "Interest",
-        "Sponsor",
-        "Investment",
-        "Other",
-      ],
 
       // Data
       months: dataTemplate
@@ -108,8 +94,8 @@ class YearBase extends React.Component {
     return(
       <div className="container">
         <Month monthId            = "0"
-               expenseCategories  = {this.state.expenseCategories}
-               incomeCategories   = {this.state.incomeCategories}
+               expenseCategories  = {expenseCategories}
+               incomeCategories   = {incomeCategories}
                generalSettings    = {this.state.generalSettings}
 
                userSet            = {this.state.months.jan.settings}
